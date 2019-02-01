@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+ 
+<html>
+ 
+  <head>
+ 
+    <meta charset="utf-8" />
+   
+    <meta http-equiv="X-UA-Compatible" content="chrome=1, IE=9">
+    <meta name="viewport" content="initial-scale=1 maximum-scale=1 user-scalable=0 minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Phaser App">
+ 
+    <script src="js/phaser.js"></script>
+    <script src="js/states/Boot.js"></script>
+    <script src="js/states/Preload.js"></script>
+    <script src="js/states/Menu.js"></script>
+    <script src="js/states/GameOver.js"></script>
+    <script src="js/entites/player.js"></script>
+     <script src="js/entites/ennemi.js"></script>
+    <script src="js/entites/fruit.js"></script>
+    <script src="js/states/Game.js"></script>
+    
+    <title>test</title>
+    <style>
+ 
+      body {
+ 
+        padding: 0px;
+ 
+        margin: 0px;
+        background:#efefef;
+      }
+ 
+      </style>
+ 
+  </head>
+ 
+  <body> 
+
+ 
+    <script>
+      DemoGame.game = new Phaser.Game(480, 320, Phaser.CANVAS, '');
+      DemoGame.game.state.add('Boot', DemoGame.Boot);
+      DemoGame.game.state.add('Preload', DemoGame.Preload);
+      DemoGame.game.state.add('Menu', DemoGame.Menu);
+      DemoGame.game.state.add('Game', DemoGame.Game);
+      DemoGame.game.state.add('GameOver', DemoGame.GameOver);
+
+      DemoGame.game.state.start('Boot');
+
+    </script>
+ 
+  </body>
+ 
+</html>
