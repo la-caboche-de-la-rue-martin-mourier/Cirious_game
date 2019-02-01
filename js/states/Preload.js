@@ -1,8 +1,8 @@
-DemoGame.Preload = function(){
+Game.Preload = function(){
    this.loadtext;
 };
 
-DemoGame.Preload.prototype = { 
+Game.Preload.prototype = { 
 
    
     preload : function(){ 

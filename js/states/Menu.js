@@ -1,8 +1,8 @@
-DemoGame.Menu=function(){
+Game.Menu=function(){
 
 };
 
-DemoGame.Menu.prototype = { 
+Game.Menu.prototype = { 
 
    
 

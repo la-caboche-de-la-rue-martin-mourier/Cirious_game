@@ -1,8 +1,8 @@
-DemoGame.GameOver=function(){
+Game.GameOver=function(){
 
 };
 
-DemoGame.GameOver.prototype = { 
+Game.GameOver.prototype = { 
 
 
     preload : function(){ 

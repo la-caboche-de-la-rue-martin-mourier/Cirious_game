@@ -1,5 +1,5 @@
 
-DemoGame.Game= function(){
+Game.Game= function(){
   this.calqueCol;
   this.backgroundLayer;
   this.map;
@@ -10,7 +10,7 @@ DemoGame.Game= function(){
  
 };
 
-DemoGame.Game.prototype = { 
+Game.Game.prototype = { 
 
    
 
@@ -34,7 +34,7 @@ DemoGame.Game.prototype = {
            this.map.setCollisionBetween(1, 9,true,'collision');
            this.world.setBounds(0, 0, 1340, 320);
          
-           this.player= new DemoGame.Player(this.game,50,50);
+           this.player= new Game.Player(this.game,50,50);
            this.player.animations.play('droite');
 
            this.game.add.existing(this.player);

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/phaser.js"></script>
+</head>
+<body>
+    <script>
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+    
+        function preload() {
+            game.load.image('sky','assets/sky.png');
+            game.load.image('floor','assets/floor.png');
+            game.load.image('barrel','assets/barel.png');
+            game.load.spritesheet('guy','assets/guy.png',64,64);
+        }
+    
+        var platforms;
+        var playerA;
+        var playerB;
+        var cursors;
+        var keyQ;
+        var keyD;
+        var keyZ;
+
+        function create() {
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+            game.add.sprite(0,0,'sky');
+            platforms = game.add.group();
+            platforms.enableBody = true;
+            var ground = platforms.create(0, game.world.height -64, 'floor');
+            ground.scale.setTo(2,2);
+            ground.body.immovable = true;
+            var ledge = platforms.create(400,400, 'floor');
+            ledge.body.immovable = true;
+            var ledge = platforms.create(-150,200, 'floor');
+            ledge.body.immovable = true;
+
+            keyQ = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+            keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
+            keyZ = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+
+            playerA = game.add.sprite(32, game.world.height - 150, 'guy');
+            game.physics.arcade.enable(playerA);
+            playerA.body.bounce.y = 0.2;
+            playerA.body.gravity.y = 300;
+            playerA.body.collideWorldBounds = true;
+            playerA.animations.add('leftA',[8,9,10,11],10,true);
+            playerA.animations.add('rightA',[4,5,6,7],10,true);
+
+            playerB = game.add.sprite(32, game.world.height - 150, 'guy');
+            game.physics.arcade.enable(playerB);
+            playerB.body.bounce.y = 0.2;
+            playerB.body.gravity.y = 300;
+            playerB.body.collideWorldBounds = true;
+            playerB.animations.add('leftB',[8,9,10,11],10,true);
+            playerB.animations.add('rightB',[4,5,6,7],10,true);
+
+            cursors = game.input.keyboard.createCursorKeys();
+
+        }
+    
+        function update() {
+            var hitPlatformplayerA = game.physics.arcade.collide(playerA,platforms);
+            var hitPlatformplayerB = game.physics.arcade.collide(playerB,platforms);
+            var hitPlayers = game.physics.arcade.collide(playerA,playerB);
+            playerA.body.velocity.x = 0;
+            playerB.body.velocity.x = 0;
+
+            if (cursors.left.isDown)
+            {
+                playerA.body.velocity.x = -150;
+
+                playerA.animations.play('leftA');
+            }
+            else if (cursors.right.isDown)
+            {
+                playerA.body.velocity.x = 150;
+
+                playerA.animations.play('rightA');
+            }
+            else
+            {
+                playerA.animations.stop();
+
+                playerA.frame = 0;
+            }
+
+            if (cursors.up.isDown && playerA.body.touching.down && hitPlatformplayerA)
+            {
+                playerA.body.velocity.y = -350;
+            }
+
+            if (keyQ.isDown)
+            {
+                playerB.body.velocity.x = -150;
+
+                playerB.animations.play('leftB');
+            }
+            else if (keyD.isDown)
+            {
+                playerB.body.velocity.x = 150;
+
+                playerB.animations.play('rightB');
+            }
+            else
+            {
+                playerB.animations.stop();
+
+                playerB.frame = 0;
+            }
+
+            if (keyZ.isDown && playerB.body.touching.down && hitPlatformplayerB)
+            {
+                playerB.body.velocity.y = -350;
+            }
+            
+        }
+    </script>
+    
+</body>
+</html>

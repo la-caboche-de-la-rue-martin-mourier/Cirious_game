@@ -5,13 +5,13 @@ Game.TILE_WIDTH=32;
 Game.TILE_HEIGHT=32;
 Game.Boot = function(){};
 
-DemoGame.Boot.prototype = { 
+Game.Boot.prototype = { 
 
     preload : function(){ 
    
     
     },
-    
+
     create : function(){ 
        
 
@@ -20,6 +20,7 @@ DemoGame.Boot.prototype = {
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         this.scale.setScreenSize(true);*/
+        
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.state.start('Preload');
    
