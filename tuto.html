@@ -10,6 +10,10 @@
     <script>
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
     
+        function collectStar(player,star){
+                star.kill();
+            }
+            
         function preload() {
             game.load.image('sky','assets/sky.png');
             game.load.image('floor','assets/floor.png');
@@ -24,6 +28,7 @@
         var keyQ;
         var keyD;
         var keyZ;
+        var stars;
 
         function create() {
             game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -60,12 +65,37 @@
 
             cursors = game.input.keyboard.createCursorKeys();
 
+            stars = game.add.group();
+
+            stars.enableBody = true;
+
+            //  Here we'll create 12 of them evenly spaced apart
+            for (var i = 0; i < 12; i++)
+            {
+                //  Create a star inside of the 'stars' group
+                var star = stars.create(i * 70, 0, 'barrel');
+
+                //  Let gravity do its thing
+                star.body.gravity.y = 200;
+
+                //  This just gives each star a slightly random bounce value
+                
+                //star.body.bounce.y = 0.7 + Math.random() * 0.2;
+            }
+            game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
+            game.physics.arcade.overlap(playerB, stars, collectStar, null , this);
+
         }
-    
+
+
         function update() {
             var hitPlatformplayerA = game.physics.arcade.collide(playerA,platforms);
             var hitPlatformplayerB = game.physics.arcade.collide(playerB,platforms);
-            var hitPlayers = game.physics.arcade.collide(playerA,playerB);
+            game.physics.arcade.collide(playerA,playerB);
+            game.physics.arcade.collide(stars, platforms);
+            
+
+
             playerA.body.velocity.x = 0;
             playerB.body.velocity.x = 0;
 
@@ -118,6 +148,8 @@
             }
             
         }
+
+
     </script>
     
 </body>
