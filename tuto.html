@@ -22,8 +22,8 @@
             }
 
         function preload() {
-            game.load.image('sky','assets/sky.png');
-            game.load.image('floor','assets/floor.png');
+            game.load.tilemap('decors','assets/marcMap.json',null,Phaser.Tilemap.TILED_JSON);
+            game.load.image('tileset','assets/MarcTileset1.png');
             game.load.image('barrel','assets/barel.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
         }
@@ -37,31 +37,33 @@
         var keyZ;
         var stars;
 
+        var map;
+        var above;
+        var obstacles;
+        var ground;
+
         function create() {
             game.physics.startSystem(Phaser.Physics.ARCADE);
-            game.add.sprite(0,0,'sky');
-            platforms = game.add.group();
-            platforms.enableBody = true;
-            var ground = platforms.create(0, game.world.height -64, 'floor');
-            ground.scale.setTo(2,2);
-            ground.body.immovable = true;
-            var ledge = platforms.create(400,400, 'floor');
-            ledge.body.immovable = true;
-            var ledge = platforms.create(-150,200, 'floor');
-            ledge.body.immovable = true;
+
+            map = game.add.tilemap('decors');
+            map.addTilesetImage('MarcTileset1','tileset');
+            ground = map.createLayer('Road');
+            obstacles = map.createLayer('Obstacles');
+
 
             keyQ = game.input.keyboard.addKey(Phaser.Keyboard.Q);
             keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
             keyZ = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+            keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
 
             playerA = game.add.sprite(32, game.world.height - 150, 'guy');
             playerA.name = "playerA";
             game.physics.arcade.enable(playerA);
-            playerA.body.bounce.y = 0.2;
-            playerA.body.gravity.y = 300;
             playerA.body.collideWorldBounds = true;
             playerA.animations.add('leftA',[8,9,10,11],10,true);
             playerA.animations.add('rightA',[4,5,6,7],10,true);
+            playerA.animations.add('frontA',[0,1,2,3],10,true);
+            playerA.animations.add('behindA',[12,13,14,15],true);
             
             playerA.score = 0;
             playerA.scoreText = game.add.text(16, 16, 'scoreA: 0',{ fontsize: '32px', fill: '#000'});
@@ -69,14 +71,16 @@
             playerB = game.add.sprite(32, game.world.height - 150, 'guy');
             playerB.name = "playerB";
             game.physics.arcade.enable(playerB);
-            playerB.body.bounce.y = 0.2;
-            playerB.body.gravity.y = 300;
             playerB.body.collideWorldBounds = true;
             playerB.animations.add('leftB',[8,9,10,11],10,true);
             playerB.animations.add('rightB',[4,5,6,7],10,true);
+            playerB.animations.add('frontB',[0,1,2,3],10,true);
+            playerB.animations.add('behindB',[12,13,14,15],true);
 
             playerB.score = 0;
             playerB.scoreText = game.add.text(512, 16, 'scoreB: 0',{ fontsize: '32px', fill: '#000'});
+
+            above = map.createLayer('Above');
 
             cursors = game.input.keyboard.createCursorKeys();
 
@@ -118,14 +122,25 @@
             if (cursors.left.isDown)
             {
                 playerA.body.velocity.x = -150;
-
+                playerA.body.velocity.y = 0;
                 playerA.animations.play('leftA');
             }
             else if (cursors.right.isDown)
             {
                 playerA.body.velocity.x = 150;
-
+                playerA.body.velocity.y = 0;
                 playerA.animations.play('rightA');
+            }
+            else if (cursors.down.isDown)
+            {
+                playerA.body.velocity.y = 150;
+                playerA.body.velocity.x = 0;
+                playerA.animation.play('frontA');
+            }
+            else if(cursors.up.isDown){
+                playerA.body.velocity.y = -150;
+                playerA.body.velocity.x = 0;
+                playerA.animations.play('behindA');
             }
             else
             {
@@ -134,33 +149,34 @@
                 playerA.frame = 0;
             }
 
-            if (cursors.up.isDown && playerA.body.touching.down && hitPlatformplayerA)
-            {
-                playerA.body.velocity.y = -350;
-            }
-
             if (keyQ.isDown)
             {
                 playerB.body.velocity.x = -150;
-
+                playerB.body.velocity.y = 0;
                 playerB.animations.play('leftB');
             }
             else if (keyD.isDown)
             {
                 playerB.body.velocity.x = 150;
-
+                playerB.body.velocity.y = 0;
                 playerB.animations.play('rightB');
+            }
+            else if (keyS.isDown)
+            {
+                playerB.body.velocity.y = 150;
+                playerB.body.velocity.x = 0;
+                playerB.animation.play('frontB');
+            }
+            else if(keyZ.isDown){
+                playerB.body.velocity.y = -150;
+                playerB.body.velocity.x = 0;
+                playerB.animations.play('behindB');
             }
             else
             {
                 playerB.animations.stop();
 
                 playerB.frame = 0;
-            }
-
-            if (keyZ.isDown && playerB.body.touching.down && hitPlatformplayerB)
-            {
-                playerB.body.velocity.y = -350;
             }
 
             game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
