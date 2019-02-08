@@ -9,11 +9,18 @@
 <body>
     <script>
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-    
+
         function collectStar(player,star){
                 star.kill();
+                player.score += 10;
+                if(player.name === "playerA"){
+                    player.scoreText.text = 'scoreA: ' + player.score;
+                }
+                if(player.name === "playerB"){
+                    player.scoreText.text = 'scoreB: ' + player.score;
+                }
             }
-            
+
         function preload() {
             game.load.image('sky','assets/sky.png');
             game.load.image('floor','assets/floor.png');
@@ -48,20 +55,28 @@
             keyZ = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
             playerA = game.add.sprite(32, game.world.height - 150, 'guy');
+            playerA.name = "playerA";
             game.physics.arcade.enable(playerA);
             playerA.body.bounce.y = 0.2;
             playerA.body.gravity.y = 300;
             playerA.body.collideWorldBounds = true;
             playerA.animations.add('leftA',[8,9,10,11],10,true);
             playerA.animations.add('rightA',[4,5,6,7],10,true);
+            
+            playerA.score = 0;
+            playerA.scoreText = game.add.text(16, 16, 'scoreA: 0',{ fontsize: '32px', fill: '#000'});
 
             playerB = game.add.sprite(32, game.world.height - 150, 'guy');
+            playerB.name = "playerB";
             game.physics.arcade.enable(playerB);
             playerB.body.bounce.y = 0.2;
             playerB.body.gravity.y = 300;
             playerB.body.collideWorldBounds = true;
             playerB.animations.add('leftB',[8,9,10,11],10,true);
             playerB.animations.add('rightB',[4,5,6,7],10,true);
+
+            playerB.score = 0;
+            playerB.scoreText = game.add.text(512, 16, 'scoreB: 0',{ fontsize: '32px', fill: '#000'});
 
             cursors = game.input.keyboard.createCursorKeys();
 
@@ -76,6 +91,7 @@
                 var star = stars.create(i * 70, 0, 'barrel');
 
                 //  Let gravity do its thing
+                star.body.gravity.x = 0;
                 star.body.gravity.y = 200;
 
                 //  This just gives each star a slightly random bounce value
@@ -146,6 +162,10 @@
             {
                 playerB.body.velocity.y = -350;
             }
+
+            game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
+            game.physics.arcade.overlap(playerB, stars, collectStar, null , this);
+            
             
         }
 
