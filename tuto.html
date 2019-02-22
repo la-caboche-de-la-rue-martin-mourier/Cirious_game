@@ -135,7 +135,7 @@
             {
                 playerA.body.velocity.y = 150;
                 playerA.body.velocity.x = 0;
-                playerA.animation.play('frontA');
+                playerA.animations.play('frontA');
             }
             else if(cursors.up.isDown){
                 playerA.body.velocity.y = -150;
@@ -145,7 +145,8 @@
             else
             {
                 playerA.animations.stop();
-
+                playerA.body.velocity.x = 0;
+                playerA.body.velocity.y = 0;
                 playerA.frame = 0;
             }
 
@@ -165,7 +166,7 @@
             {
                 playerB.body.velocity.y = 150;
                 playerB.body.velocity.x = 0;
-                playerB.animation.play('frontB');
+                playerB.animations.play('frontB');
             }
             else if(keyZ.isDown){
                 playerB.body.velocity.y = -150;
@@ -175,7 +176,8 @@
             else
             {
                 playerB.animations.stop();
-
+                playerB.body.velocity.x = 0;
+                playerB.body.velocity.y = 0;
                 playerB.frame = 0;
             }
 
