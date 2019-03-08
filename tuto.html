@@ -25,17 +25,19 @@
             game.load.tilemap('decors','assets/marcMap.json',null,Phaser.Tilemap.TILED_JSON);
             game.load.image('tileset','assets/MarcTileset1.png');
             game.load.image('barrel','assets/barel.png');
+            game.load.image('bottle','assets/bottle.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
         }
     
         var platforms;
-        var playerA;
-        var playerB;
+        var playerA; var inclinA;
+        var playerB; var inclinB;
         var cursors;
         var keyQ;
         var keyD;
         var keyZ;
         var stars;
+        var ball;
 
         var map;
         var above;
@@ -49,6 +51,8 @@
             map.addTilesetImage('MarcTileset1','tileset');
             ground = map.createLayer('Road');
             obstacles = map.createLayer('Obstacles');
+
+            bottle = game.add.sprite(32,game.world.height-175,'bottle');
 
             map.setCollisionByExclusion([0], true, obstacles);
 
@@ -116,6 +120,8 @@
         function update() {
             game.physics.arcade.collide(playerA,obstacles);
             game.physics.arcade.collide(playerB,obstacles);
+            game.physics.arcade.collide(playerA,bottle);
+            game.physics.arcade.collide(playerB,bottle);
             game.physics.arcade.collide(playerA,playerB);
             game.physics.arcade.collide(stars, obstacles);
             
@@ -129,30 +135,37 @@
                 playerA.body.velocity.x = -150;
                 playerA.body.velocity.y = 0;
                 playerA.animations.play('leftA');
+                inclinA = 'left';
             }
             else if (cursors.right.isDown)
             {
                 playerA.body.velocity.x = 150;
                 playerA.body.velocity.y = 0;
                 playerA.animations.play('rightA');
+                inclinA = 'right';
             }
             else if (cursors.down.isDown)
             {
                 playerA.body.velocity.y = 150;
                 playerA.body.velocity.x = 0;
                 playerA.animations.play('frontA');
+                inclinA = 'front';
             }
             else if(cursors.up.isDown){
                 playerA.body.velocity.y = -150;
                 playerA.body.velocity.x = 0;
                 playerA.animations.play('behindA');
+                inclinA = 'bh';
             }
             else
             {
                 playerA.animations.stop();
                 playerA.body.velocity.x = 0;
                 playerA.body.velocity.y = 0;
-                playerA.frame = 0;
+                if(inclinA=='left'){playerA.frame = 8;}
+                if(inclinA=='right'){playerA.frame = 5;}
+                if(inclinA=='front'){playerA.frame = 0;}
+                if(inclinA=='bh'){playerA.frame = 12;}
             }
 
             if (keyQ.isDown)
@@ -160,23 +173,27 @@
                 playerB.body.velocity.x = -150;
                 playerB.body.velocity.y = 0;
                 playerB.animations.play('leftB');
+                inclinB = 'left';
             }
             else if (keyD.isDown)
             {
                 playerB.body.velocity.x = 150;
                 playerB.body.velocity.y = 0;
                 playerB.animations.play('rightB');
+                inclinB = 'right';
             }
             else if (keyS.isDown)
             {
                 playerB.body.velocity.y = 150;
                 playerB.body.velocity.x = 0;
                 playerB.animations.play('frontB');
+                inclinB = 'front';
             }
             else if(keyZ.isDown){
                 playerB.body.velocity.y = -150;
                 playerB.body.velocity.x = 0;
                 playerB.animations.play('behindB');
+                inclinB ='bh';
             }
             else
             {
@@ -184,6 +201,10 @@
                 playerB.body.velocity.x = 0;
                 playerB.body.velocity.y = 0;
                 playerB.frame = 0;
+                if(inclinB=='left'){playerA.frame = 8;}
+                if(inclinB=='right'){playerA.frame = 5;}
+                if(inclinB=='front'){playerA.frame = 0;}
+                if(inclinB=='bh'){playerA.frame = 12;}
             }
 
             game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
