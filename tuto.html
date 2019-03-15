@@ -52,7 +52,10 @@
             ground = map.createLayer('Road');
             obstacles = map.createLayer('Obstacles');
 
-            bottle = game.add.sprite(32,game.world.height-175,'bottle');
+            bottle = game.add.sprite(400,game.world.height-300,'bottle');
+            game.physics.arcade.enable(bottle);
+            bottle.scale.x = 2; bottle.scale.y = 2;
+            bottle.body.immovable = true;
 
             map.setCollisionByExclusion([0], true, obstacles);
 
@@ -97,22 +100,10 @@
 
             stars.enableBody = true;
 
-            //  Here we'll create 12 of them evenly spaced apart
             for (var i = 0; i < 12; i++)
             {
-                //  Create a star inside of the 'stars' group
-                var star = stars.create(i * 70, 0, 'barrel');
-
-                //  Let gravity do its thing
-                star.body.gravity.x = 0;
-                star.body.gravity.y = 200;
-
-                //  This just gives each star a slightly random bounce value
-                
-                //star.body.bounce.y = 0.7 + Math.random() * 0.2;
+                var star = stars.create(i*70, game.world.randomY, 'barrel');
             }
-            game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
-            game.physics.arcade.overlap(playerB, stars, collectStar, null , this);
 
         }
 
@@ -201,16 +192,20 @@
                 playerB.body.velocity.x = 0;
                 playerB.body.velocity.y = 0;
                 playerB.frame = 0;
-                if(inclinB=='left'){playerA.frame = 8;}
-                if(inclinB=='right'){playerA.frame = 5;}
-                if(inclinB=='front'){playerA.frame = 0;}
-                if(inclinB=='bh'){playerA.frame = 12;}
+                if(inclinB=='left'){playerB.frame = 8;}
+                if(inclinB=='right'){playerB.frame = 5;}
+                if(inclinB=='front'){playerB.frame = 0;}
+                if(inclinB=='bh'){playerB.frame = 12;}
             }
 
             game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
             game.physics.arcade.overlap(playerB, stars, collectStar, null , this);
             
             
+        }
+
+        function ObjectMoving(){
+
         }
 
 
