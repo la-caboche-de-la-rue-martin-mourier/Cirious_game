@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -20,6 +20,25 @@
                     player.scoreText.text = 'scoreB: ' + player.score;
                 }
             }
+
+        function pushthat(){
+            if(actionKeyB.isDown){
+                
+            }
+        }
+
+        function ptverif(){
+            
+        }
+
+        function onMoveComplete(){
+            console.log("onMoveC : bpx",bottle.position.x);
+            console.log("onMoveC : end",finish);
+            if(bottle.position.x <= finish){
+                console.log("if : bpx",bottle.position.x);
+                bottle.body.velocity.x = 0;
+            }
+        }
 
         function preload() {
             game.load.tilemap('decors','assets/marcMap.json',null,Phaser.Tilemap.TILED_JSON);
@@ -52,7 +71,7 @@
             ground = map.createLayer('Road');
             obstacles = map.createLayer('Obstacles');
 
-            bottle = game.add.sprite(400,game.world.height-300,'bottle');
+            bottle = game.add.sprite(350,game.world.height-250,'bottle');
             game.physics.arcade.enable(bottle);
             bottle.scale.x = 2; bottle.scale.y = 2;
             bottle.body.immovable = true;
@@ -63,6 +82,8 @@
             keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
             keyZ = game.input.keyboard.addKey(Phaser.Keyboard.Z);
             keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
+            actionKeyA = game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_0);
+            actionKeyB = game.input.keyboard.addKey(Phaser.Keyboard.A);
 
             playerA = game.add.sprite(32, game.world.height - 150, 'guy');
             playerA.name = "playerA";
@@ -112,7 +133,7 @@
             game.physics.arcade.collide(playerA,obstacles);
             game.physics.arcade.collide(playerB,obstacles);
             game.physics.arcade.collide(playerA,bottle);
-            game.physics.arcade.collide(playerB,bottle);
+            game.physics.arcade.collide(playerB,bottle,pushthat,ptverif, this);
             game.physics.arcade.collide(playerA,playerB);
             game.physics.arcade.collide(stars, obstacles);
             
@@ -201,11 +222,15 @@
             game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
             game.physics.arcade.overlap(playerB, stars, collectStar, null , this);
             
-            
-        }
+            if(game.physics.arcade.collide(playerA,bottle)){
+                game.add.text(200, 200, 'tu tocuehs', { fontsize: '20px', fill: '#000'});
+            }
 
-        function ObjectMoving(){
-
+            console.log("coucou",actionKeyA.isDown);
+            if(actionKeyA.isDown){
+                finish = bottle.position.x+50;
+                game.physics.arcade.moveToXY(bottle,finish,bottle.position.y,50,onMoveComplete);
+            }
         }
 
 
