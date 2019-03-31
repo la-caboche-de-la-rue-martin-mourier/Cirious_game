@@ -32,6 +32,21 @@
         var ground;
         var bottles;
 
+        function gofull() {
+
+            if (game.scale.isFullScreen)
+            {
+                game.scale.stopFullScreen();
+            }
+            else
+            {
+                game.scale.startFullScreen(false);
+                
+                create();
+            }
+
+        }       
+
         function keyUsed(player){
             if(player.body.velocity.x > 0){ return 'right'; }
             else if(player.body.velocity.x<0){ return 'left'; }
@@ -56,6 +71,7 @@
 
         function create() {
             game.physics.startSystem(Phaser.Physics.ARCADE);
+
 
             map = game.add.tilemap('decors');
             map.addTilesetImage('MarcTileset1','tileset');
@@ -114,6 +130,8 @@
             above = map.createLayer('Above');
 
             cursors = game.input.keyboard.createCursorKeys();
+
+            fs_button = game.add.button(0,0,"fs_button",gofull,this);
 
         }
 
