@@ -17,6 +17,7 @@
             game.load.image('bottle','assets/bottle.png');
             game.load.image('sword','assets/sword.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
+            game.load.spritesheet('explo','assets/Explosion.png',96,96);
         }
 
         var playerA;
@@ -123,6 +124,7 @@
             playerB.animations.add('rightB',[4,5,6,7],10,true);
             playerB.animations.add('frontB',[0,1,2,3],10,true);
             playerB.animations.add('behindB',[12,13,14,15],true);
+            playerB.alpha = 0;
 
             playerB.score = 0;
             playerB.scoreText = game.add.text(512, 16, 'scoreB: 0',{ fontsize: '32px', fill: '#000'});
@@ -131,7 +133,7 @@
 
             cursors = game.input.keyboard.createCursorKeys();
 
-            fs_button = game.add.button(0,0,"fs_button",gofull,this);
+            fs_button = game.add.button(100,100,"fs_button",gofull,this);
 
         }
 
@@ -196,7 +198,7 @@
             }
             
             if(actionKeyA.isDown){
-                console.log(playerA.position);
+                
             }
         }
 
