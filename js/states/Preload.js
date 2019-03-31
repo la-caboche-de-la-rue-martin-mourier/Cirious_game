@@ -21,7 +21,6 @@ Game.Preload.prototype = {
     }, 
 
     startLoad: function(){
-         this.load.tilemap('niveau1', 'assets/tableaux/level1.json', null, Phaser.Tilemap.TILED_JSON);
          this.load.image('tiles_40x40', 'assets/img/tiles.png');
          this.load.spritesheet('player', 'assets/img/player.png',40,40);
          this.load.spritesheet('ennemi', 'assets/img/ennemy.png',40,40);
@@ -42,6 +41,6 @@ Game.Preload.prototype = {
 
     loadComplete : function(){
 
-      this.state.start('Game');
+      //this.state.start('Game');
     }
 }
