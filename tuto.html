@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -40,8 +40,8 @@
         }
     
         var platforms;
-        var playerA; var inclinA;
-        var playerB; var inclinB;
+        var playerA;
+        var playerB;
         var cursors;
         var keyQ;
         var keyD;
@@ -140,37 +140,29 @@
                 playerA.body.velocity.x = -150;
                 playerA.body.velocity.y = 0;
                 playerA.animations.play('leftA');
-                inclinA = 'left';
             }
             else if (cursors.right.isDown)
             {
                 playerA.body.velocity.x = 150;
                 playerA.body.velocity.y = 0;
                 playerA.animations.play('rightA');
-                inclinA = 'right';
             }
             else if (cursors.down.isDown)
             {
                 playerA.body.velocity.y = 150;
                 playerA.body.velocity.x = 0;
                 playerA.animations.play('frontA');
-                inclinA = 'front';
             }
             else if(cursors.up.isDown){
                 playerA.body.velocity.y = -150;
                 playerA.body.velocity.x = 0;
                 playerA.animations.play('behindA');
-                inclinA = 'bh';
             }
             else
             {
                 playerA.animations.stop();
                 playerA.body.velocity.x = 0;
                 playerA.body.velocity.y = 0;
-                if(inclinA=='left'){playerA.frame = 8;}
-                if(inclinA=='right'){playerA.frame = 5;}
-                if(inclinA=='front'){playerA.frame = 0;}
-                if(inclinA=='bh'){playerA.frame = 12;}
             }
 
             if (keyQ.isDown)
@@ -178,38 +170,29 @@
                 playerB.body.velocity.x = -150;
                 playerB.body.velocity.y = 0;
                 playerB.animations.play('leftB');
-                inclinB = 'left';
             }
             else if (keyD.isDown)
             {
                 playerB.body.velocity.x = 150;
                 playerB.body.velocity.y = 0;
                 playerB.animations.play('rightB');
-                inclinB = 'right';
             }
             else if (keyS.isDown)
             {
                 playerB.body.velocity.y = 150;
                 playerB.body.velocity.x = 0;
                 playerB.animations.play('frontB');
-                inclinB = 'front';
             }
             else if(keyZ.isDown){
                 playerB.body.velocity.y = -150;
                 playerB.body.velocity.x = 0;
                 playerB.animations.play('behindB');
-                inclinB ='bh';
             }
             else
             {
                 playerB.animations.stop();
                 playerB.body.velocity.x = 0;
                 playerB.body.velocity.y = 0;
-                playerB.frame = 0;
-                if(inclinB=='left'){playerB.frame = 8;}
-                if(inclinB=='right'){playerB.frame = 5;}
-                if(inclinB=='front'){playerB.frame = 0;}
-                if(inclinB=='bh'){playerB.frame = 12;}
             }
 
             game.physics.arcade.overlap(playerA, stars, collectStar, null , this);
