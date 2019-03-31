@@ -10,6 +10,21 @@
     <script>
         var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
+        function gofull() {
+
+            if (game.scale.isFullScreen)
+            {
+                game.scale.stopFullScreen();
+            }
+            else
+            {
+                game.scale.startFullScreen(false);
+                
+                create();
+            }
+
+        }
+
         function collectStar(player,star){
                 star.kill();
                 player.score += 10;
@@ -70,6 +85,8 @@
             bottle.body.collideWorldBounds = true;
 
             map.setCollisionByExclusion([0], true, obstacles);
+
+            fs_button = game.add.button(0,0,"fs_button",gofull,this);
 
             keyQ = game.input.keyboard.addKey(Phaser.Keyboard.Q);
             keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
