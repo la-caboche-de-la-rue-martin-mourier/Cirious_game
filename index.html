@@ -54,11 +54,19 @@
 
         } 
 
+        function radar(){
+            if(visualKey.isDown && timer >= 5){
+                console.log(timer);
+                playerB.animations.play('visu',10,false);
+                timer = 0;
+            }
+        }
+
         function checkMvt(playerA,playerB){
-            console.log(playerA.body.velocity);
-            if(!cursors.up.isDown && playerA.body.velocity.y<0){
-                console.log(cursors.up.isDown);
-                playerA.body.velocity.y = 0;
+            //console.log(playerA.body.velocity);
+            if(cursors.up.isDown == false && playerA.body.velocity.y<0){
+                console.log('coucou');
+                //playerA.body.velocity.y = 0;
             }
         }
 
@@ -82,7 +90,6 @@
         }
 
         function stopping(bottle){
-            bottle.body.immovable = true;
             bottle.body.velocity.x = 0 ; bottle.body.velocity.y = 0 ;
         }
 
@@ -140,11 +147,13 @@
             var obs = obstacles.create(2, 65, 'obs');
             obs.scale.x = 27; obs.scale.y = 190; obs.body.immovable = true;
 
+            obstacles.alpha = 0;
+
             //objects creation
             bottles = game.add.group();
             bottles.enableBody = true;
             for (var i = 0; i < 5; i++){
-                var bottle = bottles.create(i*70, game.world.randomY, 'bottle');
+                var bottle = bottles.create(i*70, 120, 'bottle');
                 bottle.scale.x = 1.5; bottle.scale.y = 1.5;
                 bottle.body.collideWorldBounds = true;
                 bottle.body.immovable = true;
@@ -205,7 +214,7 @@
 
             radar();
 
-            //game.debug.body(playerB);
+            game.debug.body(playerB);
 
             //colliding 
             game.physics.arcade.collide([playerA,playerB],wall);
@@ -213,7 +222,8 @@
             game.physics.arcade.collide(playerA,playerB);
             game.physics.arcade.collide(playerA,bottles);
             game.physics.arcade.collide(playerB,bottles,pushthat,null,this);
-            game.physics.arcade.collide(bottles,[bottles,obstacles,wall],stopping,null,this);
+            game.physics.arcade.collide(bottles,[bottles,obstacles],stopping,null,this);
+            game.physics.arcade.collide(bottles,wall,stopping,null,this);
 
             // movement definiton 
 
@@ -265,14 +275,6 @@
             }
 
             checkMvt(playerA,playerB);
-        }
-
-        function radar(){
-            if(visualKey.isDown && timer >= 5){
-                console.log(timer);
-                playerB.animations.play('visu',10,false);
-                timer = 0;
-            }
         }
 
 
