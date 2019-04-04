@@ -16,6 +16,7 @@
             game.load.image('barrel','assets/barel.png');
             game.load.image('bottle','assets/bottle.png');
             game.load.image('sword','assets/sword.png');
+            game.load.image('fullscreenbutton','assets/fullscreenbutton.png',64,64);
             game.load.spritesheet('guy','assets/guy.png',64,64);
             game.load.spritesheet('explo','assets/Explosion.png',96,96);
         }
@@ -148,7 +149,7 @@
 
             cursors = game.input.keyboard.createCursorKeys();
 
-            fs_button = game.add.button(0,0,"fs_button",gofull,this);
+            fs_button = game.add.button(0,0,"fullscreenbutton",gofull,this);
 
         }
 
