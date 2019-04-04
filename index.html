@@ -18,7 +18,7 @@
             game.load.image('barrel','assets/barel.png');
             game.load.image('bottle','assets/bottle.png');
             game.load.image('obs','assets/Obstacles.png');
-            game.load.image('fullscreenbutton','assets/fullscreenbutton.png',64,64);
+            game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
             game.load.spritesheet('aveugle','assets/ondebis.png',64,64);
         }
@@ -113,16 +113,24 @@
 
             var obs = obstacles.create(355, 137, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-            var obs = obstacles.create(355, 217, 'obs');
+
+            var obs = obstacles.create(355, 329, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-            var obs = obstacles.create(355, 137, 'obs');
+
+            var obs = obstacles.create(355, 232, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-            var obs = obstacles.create(355, 137, 'obs');
+
+            var obs = obstacles.create(484, 137, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-            var obs = obstacles.create(355, 137, 'obs');
+
+            var obs = obstacles.create(484, 232, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-            var obs = obstacles.create(355, 137, 'obs');
+
+            var obs = obstacles.create(484, 329, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
+
+            var obs = obstacles.create(2, 65, 'obs');
+            obs.scale.x = 27; obs.scale.y = 190; obs.body.immovable = true;
 
             //objects creation
             bottles = game.add.group();
@@ -250,7 +258,7 @@
         }
 
         function radar(){
-            if(visualKey.isDown && timer >= 5){
+            if(visualKey.isDown /*&& timer >= 5*/){
                 console.log(timer);
                 playerB.animations.play('visu',10,false);
                 timer = 0;
