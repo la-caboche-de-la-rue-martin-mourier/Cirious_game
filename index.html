@@ -54,6 +54,14 @@
 
         } 
 
+        function checkMvt(playerA,playerB){
+            console.log(playerA.body.velocity);
+            if(!cursors.up.isDown && playerA.body.velocity.y<0){
+                console.log(cursors.up.isDown);
+                playerA.body.velocity.y = 0;
+            }
+        }
+
         function updateTimer(){timer++;}      
 
         function keyUsed(player){
@@ -255,10 +263,12 @@
             {
                 playerB.body.velocity.x = 0; playerB.body.velocity.y = 0;
             }
+
+            checkMvt(playerA,playerB);
         }
 
         function radar(){
-            if(visualKey.isDown /*&& timer >= 5*/){
+            if(visualKey.isDown && timer >= 5){
                 console.log(timer);
                 playerB.animations.play('visu',10,false);
                 timer = 0;
