@@ -8,17 +8,19 @@
 </head>
 <body>
     <script>
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+        var game = new Phaser.Game(640, 384, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
         function preload() {
-            game.load.tilemap('decors','assets/marcMap.json',null,Phaser.Tilemap.TILED_JSON);
-            game.load.image('tileset','assets/MarcTileset1.png');
+            //game.load.tilemap('decors','assets/marcMap.json',null,Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('coucou','assets/supertest.json',null,Phaser.Tilemap.TILED_JSON);
+            //game.load.image('tileset','assets/MarcTileset1.png');
+            game.load.image('tileset','assets/supermarket.png');
             game.load.image('barrel','assets/barel.png');
             game.load.image('bottle','assets/bottle.png');
-            game.load.image('sword','assets/sword.png');
+            game.load.image('obs','assets/Obstacles.png');
             game.load.image('fullscreenbutton','assets/fullscreenbutton.png',64,64);
             game.load.spritesheet('guy','assets/guy.png',64,64);
-            game.load.spritesheet('explo','assets/Explosion.png',96,96);
+            game.load.spritesheet('aveugle','assets/ondebis.png',64,64);
         }
 
         var playerA;
@@ -27,11 +29,14 @@
         var keyQ;
         var keyD;
         var keyZ;
+        var visualKey;
+        var timer;
 
         var map;
-        var above;
-        var obstacles;
         var ground;
+        var obstacles;
+        var shelf;
+        var wall;
         var bottles;
 
         function gofull() {
@@ -47,7 +52,9 @@
                 create();
             }
 
-        }       
+        } 
+
+        function updateTimer(){timer++;}      
 
         function keyUsed(player){
             if(player.body.velocity.x > 0){ return 'right'; }
@@ -59,10 +66,10 @@
 
         function pushthat(player,bottle){
             if(actionKeyB.isDown){
-                bottle.body.velocity.x = -100;
+                bottle.body.velocity.x = -150;
             }
             if(actionKey2B.isDown){
-                bottle.body.velocity.x = 100;
+                bottle.body.velocity.x = 150;
             }
         }
 
@@ -72,9 +79,7 @@
         }
 
         function create() {
-
             game.physics.startSystem(Phaser.Physics.ARCADE);
-
 
             //stretch to fill
             game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
@@ -83,25 +88,53 @@
             game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 
             //map config
-            map = game.add.tilemap('decors');
-            map.addTilesetImage('MarcTileset1','tileset');
-            ground = map.createLayer('Road');
-            obstacles = map.createLayer('Obstacles');
+            map = game.add.tilemap('coucou');
+            map.addTilesetImage('Supermarket','tileset');
+            ground = map.createLayer('Ground');
+            wall = map.createLayer('Wall');
+            shelf = map.createLayer('Shelf');
 
+            map.setCollisionByExclusion([0],true,wall);
+
+            //HITBOXES
+            obstacles = game.add.group();
+            obstacles.enableBody = true;
+            var obs = obstacles.create(115, 142, 'obs');
+            obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
+
+            var obs = obstacles.create(210, 142, 'obs');
+            obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
+
+            var obs = obstacles.create(115, 237, 'obs');
+            obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
+
+            var obs = obstacles.create(210, 237, 'obs');
+            obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
+
+            var obs = obstacles.create(355, 137, 'obs');
+            obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
+            var obs = obstacles.create(355, 217, 'obs');
+            obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
+            var obs = obstacles.create(355, 137, 'obs');
+            obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
+            var obs = obstacles.create(355, 137, 'obs');
+            obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
+            var obs = obstacles.create(355, 137, 'obs');
+            obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
+            var obs = obstacles.create(355, 137, 'obs');
+            obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
 
             //objects creation
             bottles = game.add.group();
             bottles.enableBody = true;
             for (var i = 0; i < 5; i++){
                 var bottle = bottles.create(i*70, game.world.randomY, 'bottle');
-                bottle.scale.x = 2; bottle.scale.y = 2;
+                bottle.scale.x = 1.5; bottle.scale.y = 1.5;
                 bottle.body.collideWorldBounds = true;
                 bottle.body.immovable = true;
                 bottle.body.onWorldBounds = new Phaser.Signal();
                 bottle.body.onWorldBounds.add(stopping);
             }
-
-            map.setCollisionByExclusion([0], true, obstacles);
 
             // key biding 
 
@@ -112,6 +145,7 @@
             actionKeyA = game.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_0);
             actionKeyB = game.input.keyboard.addKey(Phaser.Keyboard.A);
             actionKey2B = game.input.keyboard.addKey(Phaser.Keyboard.E);
+            visualKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
 
 
             //animation
@@ -124,19 +158,15 @@
             playerA.animations.add('leftA',[8,9,10,11],10,true);
             playerA.animations.add('rightA',[4,5,6,7],10,true);
             playerA.animations.add('frontA',[0,1,2,3],10,true);
-            playerA.animations.add('behindA',[12,13,14,15],true);
+            playerA.animations.add('behindA',[12,13,14,15],10,true);
             
-            playerB = game.add.sprite(62, game.world.height - 150, 'guy');
+            playerB = game.add.sprite(62, game.world.height - 150, 'aveugle');
             playerB.name = "playerB";
             game.physics.arcade.enable(playerB);
             playerB.body.collideWorldBounds = true;
-            playerB.body.setSize(36, 25, 14, 32);
-            playerB.scale.x = 0.7 ; playerB.scale.y = 0.7;
-            playerB.animations.add('leftB',[8,9,10,11],10,true);
-            playerB.animations.add('rightB',[4,5,6,7],10,true);
-            playerB.animations.add('frontB',[0,1,2,3],10,true);
-            playerB.animations.add('behindB',[12,13,14,15],true);
-            playerB.alpha = 0;
+            playerB.body.setSize(32, 32, 16, 16);
+            playerB.scale.x = 1 ; playerB.scale.y = 1;
+            playerB.animations.add('visu',[0,1,2,3,4,5,6,7,8,9],10,false);
 
             //score display
             playerA.score = 0;
@@ -145,44 +175,50 @@
             playerB.score = 0;
             playerB.scoreText = game.add.text(512, 16, 'scoreB: 0',{ fontsize: '32px', fill: '#000'});
 
-            above = map.createLayer('Above');
-
             cursors = game.input.keyboard.createCursorKeys();
 
             fs_button = game.add.button(0,0,"fullscreenbutton",gofull,this);
+
+            timer = 5;
+            game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
 
         }
 
 
         function update() {
 
+            radar();
+
+            //game.debug.body(playerB);
+
             //colliding 
+            game.physics.arcade.collide([playerA,playerB],wall);
             game.physics.arcade.collide([playerA,playerB],obstacles);
             game.physics.arcade.collide(playerA,playerB);
             game.physics.arcade.collide(playerA,bottles);
             game.physics.arcade.collide(playerB,bottles,pushthat,null,this);
-            game.physics.arcade.collide(bottles,[bottles,obstacles],stopping,null,this);
+            game.physics.arcade.collide(bottles,[bottles,obstacles,wall],stopping,null,this);
 
             // movement definiton 
 
             if (cursors.left.isDown)
             {
-                playerA.body.velocity.x = -150; playerA.body.velocity.y = 0;
+                playerA.body.velocity.x = -120; playerA.body.velocity.y = 0;
                 playerA.animations.play('leftA');
             }
             else if (cursors.right.isDown)
             {
-                playerA.body.velocity.x = 150; playerA.body.velocity.y = 0;
+                playerA.body.velocity.x = 120; playerA.body.velocity.y = 0;
                 playerA.animations.play('rightA');
             }
             else if (cursors.down.isDown)
             {
-                playerA.body.velocity.y = 150;
+                playerA.body.velocity.y = 120;
                 playerA.body.velocity.x = 0;
                 playerA.animations.play('frontA');  
             }
             else if(cursors.up.isDown){
-                playerA.body.velocity.y = -150; playerA.body.velocity.x = 0;
+                playerA.body.velocity.y = -120; playerA.body.velocity.x = 0;
                 playerA.animations.play('behindA');
             }
             else
@@ -195,26 +231,29 @@
             if (keyQ.isDown)
             {
                 playerB.body.velocity.x = -150; playerB.body.velocity.y = 0;
-                playerB.animations.play('leftB');
             }
             else if (keyD.isDown)
             {
                 playerB.body.velocity.x = 150; playerB.body.velocity.y = 0;
-                playerB.animations.play('rightB');
             }
             else if (keyS.isDown)
             {
                 playerB.body.velocity.y = 150; playerB.body.velocity.x = 0;
-                playerB.animations.play('frontB');
             }
             else if(keyZ.isDown){
                 playerB.body.velocity.y = -150; playerB.body.velocity.x = 0;
-                playerB.animations.play('behindB');
             }
             else
             {
-                playerB.animations.stop();
                 playerB.body.velocity.x = 0; playerB.body.velocity.y = 0;
+            }
+        }
+
+        function radar(){
+            if(visualKey.isDown && timer >= 5){
+                console.log(timer);
+                playerB.animations.play('visu',10,false);
+                timer = 0;
             }
         }
 
