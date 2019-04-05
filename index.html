@@ -23,6 +23,7 @@
             game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
             game.load.spritesheet('aveugle','assets/ondeblack.png',64,64);
+            game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
         }
 
         var playerA;
@@ -178,7 +179,10 @@
             banana.body.gravity.x = 0;
             banana.body.gravity.y = 0;
 
-            // key biding 
+
+            music = game.add.audio('theme');
+            music.play();
+            // key biding
 
             keyQ = game.input.keyboard.addKey(Phaser.Keyboard.Q);
             keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
