@@ -47,19 +47,19 @@
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.3",
+ "tiledversion":"1.2.1",
  "tileheight":32,
  "tilesets":[
         {
          "columns":9,
          "firstgid":1,
          "image":"supermarket.png",
-         "imageheight":288,
+         "imageheight":320,
          "imagewidth":288,
          "margin":0,
          "name":"Supermarket",
          "spacing":0,
-         "tilecount":81,
+         "tilecount":90,
          "tileheight":32,
          "tilewidth":32,
          "transparentcolor":"#ff00ff"
