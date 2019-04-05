@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Page Title</title>
+    <title>Dis!puzzled</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="js/phaser.js"></script>
 </head>
@@ -19,13 +19,14 @@
             game.load.image('banana','assets/Banana.png')
             game.load.image('bottle','assets/bottle.png');
             game.load.image('caddi1','assets/caddi1.png');
+            game.load.image('caddi3','assets/caddi3.png')
             game.load.image('obs','assets/Obstacles.png');
             game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
             game.load.spritesheet('aveugle','assets/ondeblack.png',64,64);
             game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
         }
-
+        var loaded = 0;
         var playerA;
         var playerB;
         var cursors;
@@ -57,8 +58,9 @@
 
         } 
 
+        //
         function radar(){
-            if(visualKey.isDown && timer >= 5){
+            if(visualKey.isDown && timer >= 3){
                 console.log(timer);
                 playerB.animations.play('visu',10,false);
                 timer = 0;
@@ -67,8 +69,8 @@
 
         function addBanana(player,banana){
             banana.kill();
-            player.score += 1;
-            player.scoreText.text = 'nombre de banane : ' + player.score;
+            player.score -= 1;
+            player.scoreText.text = 'Bananes Restantes : ' + player.score;
         }
 
         function checkMvt(playerA,playerB){
@@ -97,6 +99,16 @@
                 bottle.body.velocity.x = 150;
             }
         }
+
+        function pushthat2(player,upcaddi){
+            if(actionKeyB.isDown){
+                upcaddi.body.velocity.y = -150;
+            }
+            if(actionKey2B.isDown){
+                upcaddi.body.velocity.y = 150;
+            }
+        }
+
 
         function stopping(bottle){
             bottle.body.velocity.x = 0 ; bottle.body.velocity.y = 0 ;
@@ -163,25 +175,36 @@
             bottles.enableBody = true;
 
             for (var i = 1; i < 6; i++){
-                var bottle = bottles.create(i*75, 100, 'caddi1'/*'bottle'*/);
-                bottle.scale.x = 0.8/*1.5*/; bottle.scale.y = 0.8/*1.5*/;
+                var bottle = bottles.create(i*68, 100, 'caddi1');
+                bottle.scale.x = 1/*1.5*/; bottle.scale.y = 1/*1.5*/;
                 bottle.body.collideWorldBounds = true;
                 bottle.body.immovable = true;
                 bottle.body.onWorldBounds = new Phaser.Signal();
                 bottle.body.onWorldBounds.add(stopping);
             }
 
+            upCaddys = game.add.group();
+            upCaddys.enableBody = true;
+            var upcaddi = upCaddys.create(170, 200, 'caddi3');
+            upcaddi.scale.x = 1/*1.5*/; upcaddi.scale.y = 1/*1.5*/;
+            upcaddi.body.collideWorldBounds = true; upcaddi.body.immovable = true;
+            upcaddi.body.onWorldBounds = new Phaser.Signal(); upcaddi.body.onWorldBounds.add(stopping);
+
+
             bananas = game.add.group();
             bananas.enableBody = true;
-            var banana = bananas.create(200, 200, 'banana');
+            var banana = bananas.create(210, 200, 'banana');
             banana.scale.x= 0.12;
             banana.scale.y= 0.12;
             banana.body.gravity.x = 0;
             banana.body.gravity.y = 0;
 
-
-            music = game.add.audio('theme');
-            music.play();
+            if(loaded == 0){
+                music = /*new Phaser.Sound(game,'theme',1,true)*/  game.add.audio('theme');
+                music.loop = true ;
+                music.play();
+                loaded ++;
+            }
             // key biding
 
             keyQ = game.input.keyboard.addKey(Phaser.Keyboard.Q);
@@ -215,8 +238,8 @@
             playerB.animations.add('visu',[0,1,2,3,4,5,6,7,8,9],10,false);
 
             //score display
-            playerA.score = 0;
-            playerA.scoreText = game.add.text(256, 16, 'nombre de banane : 0',{ fontsize: '32px', fill: '#000'});
+            playerA.score = 1;
+            playerA.scoreText = game.add.text(256, 16, 'Bananes Restantes : 1',{ fontsize: '32px', fill: '#000'});
 
             /*playerB.score = 0;
             playerB.scoreText = game.add.text(512, 16, 'scoreB: 0',{ fontsize: '32px', fill: '#000'});*/
@@ -235,16 +258,18 @@
 
             radar();
 
-            game.debug.body(playerB);
+            //game.debug.body(playerB);
 
             //colliding 
             game.physics.arcade.collide([playerA,playerB],wall);
             game.physics.arcade.collide([playerA,playerB],obstacles);
             game.physics.arcade.collide(playerA,playerB);
             game.physics.arcade.collide(playerA,bottles);
+            game.physics.arcade.collide(playerA,upCaddys);
             game.physics.arcade.collide(playerB,bottles,pushthat,null,this);
-            game.physics.arcade.collide(bottles,[bottles,obstacles],stopping,null,this);
-            game.physics.arcade.collide(bottles,wall,stopping,null,this);
+            game.physics.arcade.collide(playerB,upCaddys,pushthat2,null,this);
+            game.physics.arcade.collide([bottles,upCaddys],[bottles,obstacles,upCaddys],stopping,null,this);
+            game.physics.arcade.collide([bottles,upCaddys],wall,stopping,null,this);
 
             // movement definiton 
 
