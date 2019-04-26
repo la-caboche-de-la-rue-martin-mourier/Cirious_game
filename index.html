@@ -24,6 +24,7 @@
             game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
             game.load.spritesheet('guy','assets/guy.png',64,64);
             game.load.spritesheet('aveugle','assets/ondeblack.png',64,64);
+            game.load.spritesheet('feutricolore','assets/feutricolore.png',32,32);
             game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
         }
         var loaded = 0;
@@ -35,6 +36,7 @@
         var keyZ;
         var visualKey;
         var timer;
+        var counter = 0;
 
         var map;
         var ground;
@@ -237,6 +239,20 @@
             playerB.scale.x = 1 ; playerB.scale.y = 1;
             playerB.animations.add('visu',[0,1,2,3,4,5,6,7,8,9],10,false);
 
+            //feutricolore
+
+            feuxHorizontaux = game.add.group();
+            feuxHorizontaux.enableBody = true;
+            var feux = game.add.sprite(150,150, 'feutricolore');
+            feux.animations.add('none',[0],10,true);
+            feux.animations.add('red',[1],10,true);
+            feux.animations.add('orange',[2],10,true);
+            feux.animations.add('green',[3],10,true);
+            feuxHorizontaux.add(feux);
+
+            /*feuxVerticaux = game.add.group();
+            feuxVerticaux.enableBody = true;*/
+
             //score display
             playerA.score = 1;
             playerA.scoreText = game.add.text(256, 16, 'Bananes Restantes : 1',{ fontsize: '32px', fill: '#000'});
@@ -251,6 +267,7 @@
             timer = 5;
             game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
 
+            game.time.events.repeat(3000, 10,function(){counter++; counter = counter%3;}, this);
         }
 
 
@@ -323,6 +340,30 @@
             checkMvt(playerA,playerB);
 
             game.physics.arcade.overlap(playerA,bananas,addBanana,null,this);
+
+
+            switch (counter) {
+                case 0:
+                    //feuxHorizontaux.animations.play('red');
+                    feuxHorizontaux.callAll('play', null, 'red');
+                    console.log('red');
+                    break;
+
+                case 1:
+                    //feuxHorizontaux.animations.play('orange');
+                    feuxHorizontaux.callAll('play', null, 'orange');
+                    console.log('orange');
+                    break;
+
+                case 2:
+                    //feuxHorizontaux.animations.play('green');
+                    feuxHorizontaux.callAll('play', null, 'green');
+                    console.log('green');
+                    break;
+                default:
+                    //console.log('zemruoh');
+                    break;
+            }
         }
 
 
