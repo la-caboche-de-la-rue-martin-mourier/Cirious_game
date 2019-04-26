@@ -243,15 +243,21 @@
 
             feuxHorizontaux = game.add.group();
             feuxHorizontaux.enableBody = true;
-            var feux = game.add.sprite(150,150, 'feutricolore');
-            feux.animations.add('none',[0],10,true);
-            feux.animations.add('red',[1],10,true);
-            feux.animations.add('orange',[2],10,true);
-            feux.animations.add('green',[3],10,true);
-            feuxHorizontaux.add(feux);
+            var feuxH = game.add.sprite(150,150, 'feutricolore');
+            feuxH.animations.add('none',[0],4,true);
+            feuxH.animations.add('red',[1],4,true);
+            feuxH.animations.add('orange',[2],4,true);
+            feuxH.animations.add('green',[3],4,true);
+            feuxHorizontaux.add(feuxH);
 
-            /*feuxVerticaux = game.add.group();
-            feuxVerticaux.enableBody = true;*/
+            feuxVerticaux = game.add.group();
+            feuxVerticaux.enableBody = true;
+            var feuxV = game.add.sprite(150,300, 'feutricolore');
+            feuxV.animations.add('none',[0],4,true);
+            feuxV.animations.add('red',[1],4,true);
+            feuxV.animations.add('orange',[2],4,true);
+            feuxV.animations.add('green',[3],4,true);
+            feuxVerticaux.add(feuxV);
 
             //score display
             playerA.score = 1;
@@ -267,7 +273,7 @@
             timer = 5;
             game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
 
-            game.time.events.repeat(3000, 10,function(){counter++; counter = counter%3;}, this);
+            game.time.events.repeat(3000, 9999999,function(){counter++; counter = counter%4;}, this);
         }
 
 
@@ -344,24 +350,26 @@
 
             switch (counter) {
                 case 0:
-                    //feuxHorizontaux.animations.play('red');
                     feuxHorizontaux.callAll('play', null, 'red');
-                    console.log('red');
+                    feuxVerticaux.callAll('play',null, 'green');
+                    console.log('phase1');
                     break;
 
                 case 1:
-                    //feuxHorizontaux.animations.play('orange');
                     feuxHorizontaux.callAll('play', null, 'orange');
-                    console.log('orange');
+                    feuxVerticaux.callAll('play',null, 'orange');
+                    console.log('phase2');
                     break;
 
                 case 2:
-                    //feuxHorizontaux.animations.play('green');
                     feuxHorizontaux.callAll('play', null, 'green');
-                    console.log('green');
+                    feuxVerticaux.callAll('play',null, 'red');
+                    console.log('phase3');
                     break;
-                default:
-                    //console.log('zemruoh');
+                case 3:
+                    feuxHorizontaux.callAll('play', null, 'orange');
+                    feuxVerticaux.callAll('play',null, 'orange');
+                    console.log('phase4');
                     break;
             }
         }
