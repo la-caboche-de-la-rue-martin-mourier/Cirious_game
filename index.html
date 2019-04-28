@@ -92,6 +92,7 @@
         }
 
         function pushthat(player,bottle){
+            console.log('coucou');
             if(actionKeyB.isDown){
                 bottle.body.velocity.x = -150;
             }
@@ -137,34 +138,24 @@
             obstacles.enableBody = true;
             var obs = obstacles.create(115, 142, 'obs');
             obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
-
             var obs = obstacles.create(210, 142, 'obs');
             obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
-
             var obs = obstacles.create(115, 237, 'obs');
             obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
-
             var obs = obstacles.create(210, 237, 'obs');
             obs.scale.x = 25; obs.scale.y = 50; obs.body.immovable = true;
-
             var obs = obstacles.create(355, 137, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-
             var obs = obstacles.create(355, 329, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-
             var obs = obstacles.create(355, 232, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-
             var obs = obstacles.create(484, 137, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-
             var obs = obstacles.create(484, 232, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-
             var obs = obstacles.create(484, 329, 'obs');
             obs.scale.x = 25; obs.scale.y = 20; obs.body.immovable = true;
-
             var obs = obstacles.create(2, 65, 'obs');
             obs.scale.x = 27; obs.scale.y = 190; obs.body.immovable = true;
 
@@ -200,11 +191,12 @@
             banana.body.gravity.y = 0;
 
             if(loaded == 0){
-                music = /*new Phaser.Sound(game,'theme',1,true)*/  game.add.audio('theme');
+                music = game.add.audio('theme');
                 music.loop = true ;
                 music.play();
                 loaded ++;
             }
+
             // key biding
 
             keyQ = game.input.keyboard.addKey(Phaser.Keyboard.Q);
