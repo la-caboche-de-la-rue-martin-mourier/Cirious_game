@@ -18,10 +18,14 @@ var hubState = {
         fire.animations.add('orange',[2],4,true);
         fire.animations.add('green',[3],4,true);
 
-		player = chairState;
+		this.player = game.add.sprite(24 , 24 , 'gabe');
+        game.physics.enable(this.player, Phaser.Physics.ARCADE);
+        this.player.body.collideWorldBounds = true;
 
-    	player.animations.add('forward',[0,1,2,3,4,5,6],10,true);
-    	player.animations.add('stand',[0],10,true);
+        this.player.animations.add('forward',[0,1,2,3,4,5,6],10,true);
+        this.player.animations.add('stand',[0],10,true);
+
+        cursors = game.input.keyboard.createCursorKeys();    
 
     	this.beez = game.add.group();
     	game.physics.enable(this.beez, Phaser.Physics.ARCADE);
@@ -52,9 +56,36 @@ var hubState = {
 		game.physics.arcade.collide(this.beez , disappearBlock , null , null, this);
 		game.physics.arcade.collide(this.beez,this.beez, null , null , this);
 
-		if(timerEntrance()){
-			this.thebee.body.velocity.x = -150;
-		}
+        if (cursors.left.isDown)
+        {
+            this.player.body.velocity.y = 0;
+            this.player.body.velocity.x = -100;
+            this.player.animations.play("forward");
+        }
+        else if (cursors.right.isDown)
+        {
+            this.player.body.velocity.y = 0;
+            this.player.body.velocity.x = 100;
+            this.player.animations.play("forward");
+        }
+        else if (cursors.down.isDown)
+        {
+            this.player.body.velocity.y = 100;
+            this.player.body.velocity.x = 0;
+            this.player.animations.play("forward");
+        }
+        else if(cursors.up.isDown)
+        {
+            this.player.body.velocity.y = -100;
+            this.player.body.velocity.x = 0;
+            this.player.animations.play("forward");
+        }
+        else
+        {
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.player.animations.play("stand");
+        }  
 
 		if(visualKey.isDown){
 			console.log(this.beez.length);

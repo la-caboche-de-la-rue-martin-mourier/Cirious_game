@@ -3,20 +3,21 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>On teste</title>
+	<title>Coucou</title>
 
-	<script type="text/javascript" src="js/phaser.js"></script>
-	<script type="text/javascript" src="js/states/boot.js"></script>
-	<script type="text/javascript" src="js/states/load.js"></script>
-	<script type="text/javascript" src="js/states/menu.js"></script>
-	<script type="text/javascript" src="js/states/hub.js"></script>
-	<script type="text/javascript" src="js/states/loose.js"></script>
+	<script src="js/phaser.js"></script>
+	<script src="js/states/boot.js"></script>
+	<script src="js/states/load.js"></script>
+	<script src="js/states/menu.js"></script>
+	<script src="js/states/hub.js"></script>
+	<script src="js/states/loose.js"></script>
+	<script src="js/entities/chairwheel.js"></script>
 
 </head>
 
 <body>
 
-	<script type="text/javascript">
+	<script >
 		
 		var game = new Phaser.Game(1000,600, Phaser.AUTO, '');
 
@@ -25,6 +26,7 @@
 		game.state.add('menu',menuState);
 		game.state.add('hub',hubState);
 		game.state.add('loose',looseState);
+		game.state.add('chair',chairState);
 
 		game.state.start('boot');
 
