@@ -75,12 +75,18 @@
             player.scoreText.text = 'Bananes Restantes : ' + player.score;
         }
 
-        function checkMvt(playerA,playerB){
-            //console.log(playerA.body.velocity);
-            if(cursors.up.isDown == false && playerA.body.velocity.y<0){
-                console.log('coucou');
-                //playerA.body.velocity.y = 0;
+        function updateObjective(){
+            return true;
+        }
+
+        function checkObjectives(objectives,playerA){
+            for(var i = 0; i < objectives.length ; i++){
+                //console.log(objectives[i][2]());
+                if(objectives[i][2](playerA) === true){
+                    objectives[i][0] = true;
+                }
             }
+
         }
 
         function updateTimer(){timer++;}      
@@ -266,12 +272,21 @@
             game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
 
             game.time.events.repeat(3000, 9999999,function(){counter++; counter = counter%4;}, this);
+
+            //setup objective
+            game.objectives = [[]];
+            var objective = [];
+            objective[0] = false;
+            objective[1] = "objectif 1";
+            objective[2] = function(playerA){if(playerA.score === 0){return true;}else{return false;}};
+            game.objectives.push(objective);
         }
 
 
         function update() {
 
             radar();
+            checkObjectives(game.objectives,playerA);
 
             //game.debug.body(playerB);
 
@@ -335,8 +350,6 @@
                 playerB.body.velocity.x = 0; playerB.body.velocity.y = 0;
             }
 
-            checkMvt(playerA,playerB);
-
             game.physics.arcade.overlap(playerA,bananas,addBanana,null,this);
 
 
@@ -344,26 +357,27 @@
                 case 0:
                     feuxHorizontaux.callAll('play', null, 'red');
                     feuxVerticaux.callAll('play',null, 'green');
-                    console.log('phase1');
+                    //console.log('phase1');
                     break;
 
                 case 1:
                     feuxHorizontaux.callAll('play', null, 'orange');
                     feuxVerticaux.callAll('play',null, 'orange');
-                    console.log('phase2');
+                    //console.log('phase2');
                     break;
 
                 case 2:
                     feuxHorizontaux.callAll('play', null, 'green');
                     feuxVerticaux.callAll('play',null, 'red');
-                    console.log('phase3');
+                    //console.log('phase3');
                     break;
                 case 3:
                     feuxHorizontaux.callAll('play', null, 'orange');
                     feuxVerticaux.callAll('play',null, 'orange');
-                    console.log('phase4');
+                    //console.log('phase4');
                     break;
             }
+
         }
 
 
