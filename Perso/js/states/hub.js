@@ -30,11 +30,20 @@ var hubState = {
     	this.beez = game.add.group();
     	game.physics.enable(this.beez, Phaser.Physics.ARCADE);
     	this.beez.enableBody = true;
-    	for (var i = 0; i < 5; i++) {
-    		this.thebee = this.beez.create(500 + i*200 + getRandomInt(100)*10 , 162 , 'bee');
-    		this.thebee.scale.x = 0.7 ; this.thebee.scale.y = 0.7;
+    	for (var i = 0; i < 4; i++) {
+            this.thebee = caralea(this.beez,getRandomInt(5));
+            playerA.body.setSize(36, 25, 14, 32);
     		this.thebee.body.velocity.x = -150;
     	}
+
+        this.beez2 = game.add.group();
+        game.physics.enable(this.beez2, Phaser.Physics.ARCADE);
+        this.beez2.enableBody = true;
+        for (var i = 0; i < 4; i++) {
+            this.thebee = this.beez2.create(315, 162 + i*200 + getRandomInt(100)*10 , 'bee');
+            this.thebee.scale.x = 0.7 ; this.thebee.scale.y = 0.7;
+            this.thebee.body.velocity.y = -150;
+        }
 
     	cursors = game.input.keyboard.createCursorKeys();
 
@@ -52,7 +61,7 @@ var hubState = {
 		autorization();
 
 		game.physics.arcade.collide(this.beez , obs , null , timerEntrance , this);
-		game.physics.arcade.collide(player , this.beez , perdu , null , this);
+		game.physics.arcade.collide(this.player , this.beez , perdu , null , this);
 		game.physics.arcade.collide(this.beez , disappearBlock , null , null, this);
 		game.physics.arcade.collide(this.beez,this.beez, null , null , this);
 
@@ -88,8 +97,11 @@ var hubState = {
         }  
 
 		if(visualKey.isDown){
-			console.log(this.beez.length);
+            console.log(getRandomInt(4));
 		} 
+
+
+        this.beez.setAll('body.velocity.x',-150);
 		
 
 	},
@@ -125,7 +137,7 @@ function autorization (){
 function compteisbon(him,who) {
     who.kill()
     this.beez.remove(who);
-    this.thebee = this.beez.create(1000 + getRandomInt(100)*10 , 162 , 'bee');
+    this.thebee = caralea(this.beez,getRandomInt(5));
     this.thebee.scale.x = 0.7 ; this.thebee.scale.y = 0.7;
     this.thebee.body.velocity.x = -150;
 
@@ -137,4 +149,14 @@ function perdu(){
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
+}
+
+function caralea(group,choix,){
+    if(choix == 0){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lb');}
+    if(choix == 1){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lgrey');}
+    if(choix == 2){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lr');}
+    if(choix == 3){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lgreen');}
+    if(choix == 4){item = group.create(800 + getRandomInt(200)*10 , 168 , 'ly');}
+
+    return item
 }
