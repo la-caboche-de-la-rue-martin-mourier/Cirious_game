@@ -75,16 +75,17 @@
             player.scoreText.text = 'Bananes Restantes : ' + player.score;
         }
 
-        function updateObjective(){
-            return true;
-        }
-
         function checkObjectives(objectives,playerA){
-            for(var i = 0; i < objectives.length ; i++){
-                //console.log(objectives[i][2]());
-                if(objectives[i][2](playerA) === true){
-                    objectives[i][0] = true;
-                }
+            var complete = false;
+            var actual = 0 ;
+            if(objectives[0][2](playerA)){
+                objectives[0][0] = true;
+                complete = true;
+            }
+            if(complete){
+                objectives.last.text = objectives.current.text;
+                objectives.current.text = objectives[0][1];
+                objectives.shift();
             }
 
         }
@@ -259,7 +260,7 @@
 
             //score display
             playerA.score = 1;
-            playerA.scoreText = game.add.text(256, 16, 'Bananes Restantes : 1',{ fontsize: '32px', fill: '#000'});
+            playerA.scoreText = game.add.text(256, -50, 'Bananes Restantes : 1',{ fontsize: '32px', fill: '#000'});
 
             /*playerB.score = 0;
             playerB.scoreText = game.add.text(512, 16, 'scoreB: 0',{ fontsize: '32px', fill: '#000'});*/
@@ -274,12 +275,28 @@
             game.time.events.repeat(3000, 9999999,function(){counter++; counter = counter%4;}, this);
 
             //setup objective
-            game.objectives = [[]];
+            game.objectives = [];
+            //create 1 objective
             var objective = [];
             objective[0] = false;
-            objective[1] = "objectif 1";
+            objective[1] = "Starting Game";
+            objective[2] = function(playerA){return true;};
+            game.objectives.push(objective);
+            // next
+            var objective = [];
+            objective[0] = false;
+            objective[1] = "Searching banana";
             objective[2] = function(playerA){if(playerA.score === 0){return true;}else{return false;}};
             game.objectives.push(objective);
+            ////////
+            var objective = [];
+            objective[0] = false;
+            objective[1] = "banana";
+            objective[2] = function(playerA){return false;};
+            game.objectives.push(objective);
+            ////////
+            game.objectives.last = game.add.text(256, 16, "",{ fontsize: '32px', fill: '#000'});
+            game.objectives.current = game.add.text(256, 32, game.objectives[0][1],{ fontsize: '32px', fill: '#000'});
         }
 
 
