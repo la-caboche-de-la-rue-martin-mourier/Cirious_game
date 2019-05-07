@@ -13,7 +13,7 @@ var looseState = {
 	},
 
 	start : function(){
-		game.state.start('hub');
+		game.state.start('menu');
 	},
 
 };
