@@ -4,6 +4,10 @@ var loadState = {
 
 		var loadingLabel = game.add.text(80,150, 'loading...' , {font : '30px Courier' , fill : '#ffffff'});
 
+		//TILEMAP
+        game.load.tilemap('Town','assets/map/Town.json',null,Phaser.Tilemap.TILED_JSON);
+        game.load.image('theset','assets/map/TILEgame.png');
+
 		game.load.spritesheet('gabe','assets/rpg/chars/gabe.png',24,24);
 		game.load.spritesheet('circulation','assets/feutricolore.png',32,32);
 		
@@ -40,11 +44,10 @@ var loadState = {
         game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
 		
 		game.load.image('playbutton' , 'assets/playbu.jpg',170,170);
+		game.load.spritesheet('choice','assets/choice.png',192,64);
 	},
 
 	create : function(){
-		console.log('load');
-
 		game.state.start('menu');
 	},
 

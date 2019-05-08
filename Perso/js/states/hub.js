@@ -2,7 +2,8 @@ var hubState = {
 
 	create : function(){
 
-        game.add.image(0,0,'fondbizarre');
+        //game.add.image(0,0,'fondbizarre');
+        game.stage.backgroundColor = '#4488AA';
 
     	obs = game.add.sprite(300,150,'bridge');
     	game.physics.enable(obs, Phaser.Physics.ARCADE);
@@ -12,6 +13,10 @@ var hubState = {
     	disappearBlock = game.add.sprite(-100,150,'bridge');
     	game.physics.enable(disappearBlock, Phaser.Physics.ARCADE);
     	disappearBlock.body.immovable = true;
+
+        this.TextZone = game.add.sprite(300,400,'barrel');
+        game.physics.enable(this.TextZone, Phaser.Physics.ARCADE);
+        this.TextZone.body.immovable = true;
 
     	fire = game.add.sprite(358,128,'circulation');
     	game.physics.enable(fire, Phaser.Physics.ARCADE);
@@ -71,29 +76,32 @@ var hubState = {
         }*/
         ////////////////////////////////////////////////////////
 
-        this.bananas = game.add.group();
+        /*this.bananas = game.add.group();
         this.bananas.enableBody = true;
-        var banana = this.bananas.create(210, 200, 'banana');
-        banana.scale.x= 0.12;
-        banana.scale.y= 0.12;
-        banana.body.gravity.x = 0;
-        banana.body.gravity.y = 0;
+        this.banana = this.bananas.create(210, 200, 'banana');
+        this.banana.scale.x= 0.12;
+        this.banana.scale.y= 0.12;
+        this.banana.body.gravity.x = 0;
+        this.banana.body.gravity.y = 0;
 
-        loaded = 0;
+        this.bananas.body.onCollide = new Phaser.Signal();
+        this.bananas.body.onCollide.add(console.log('yes'),this);*/
+
+
+        //MUSIQUE
+        /*loaded = 0;
         if(loaded == 0){
             music = game.add.audio('theme');
             music.loop = true ;
             music.play();
             loaded ++;
-        }        
+        }*/        
 
 
     	cursors = game.input.keyboard.createCursorKeys();
 
         fireTimer = 0;
         game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
-
-        visualKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
 
         disappearBlock.body.onCollide = new Phaser.Signal();
         disappearBlock.body.onCollide.add(compteisbon,this);
@@ -136,6 +144,7 @@ var hubState = {
         checkObjectives(game.objectives,this.playerA);
 
         game.physics.arcade.collide(this.playerA,this.playerB);
+        game.physics.arcade.collide(this.playerA , this.TextZone, plainte , null , this);
 		/*
         Collide avec les voitures
         game.physics.arcade.collide(this.beez , obs , null , timerEntrance , this);
@@ -191,7 +200,7 @@ var hubState = {
             this.playerB.body.velocity.x = 0; this.playerB.body.velocity.y = 0;
         }
 
-        game.physics.arcade.overlap(this.playerA,this.bananas,addBanana,null,this); 
+        game.physics.arcade.overlap(this.playerA,this.bananas,null,null,this); 
 
         //this.beez.setAll('body.velocity.x',-150);
 		
@@ -283,12 +292,6 @@ function radar(player){
     }
 }
 
-function addBanana(player,banana){
-    banana.kill();
-    player.score -= 1;
-    player.scoreText.text = 'Bananes Restantes : ' + player.score;
-}
-
 function checkObjectives(objectives,playerA){
     var complete = false;
     var actual = 0 ;
@@ -334,4 +337,12 @@ function pushthat2(player,upcaddi){
 
 function stopping(bottle){
     bottle.body.velocity.x = 0 ; bottle.body.velocity.y = 0 ;
+}
+
+function plainte(){
+    button1 = game.add.button(100, 460, 'choice', mychoice, this, 1, 0, 2);
+}
+
+function mychoice(button){
+
 }
