@@ -3,7 +3,8 @@ var hubState = {
 	create : function(){
 
         //game.add.image(0,0,'fondbizarre');
-        game.stage.backgroundColor = '#4488AA';
+        map = game.add.tilemap('Town');
+        map.addTilesetImage('Supermarket','theset');
 
     	obs = game.add.sprite(300,150,'bridge');
     	game.physics.enable(obs, Phaser.Physics.ARCADE);
@@ -25,6 +26,18 @@ var hubState = {
         fire.animations.add('red',[1],4,true);
         fire.animations.add('orange',[2],4,true);
         fire.animations.add('green',[3],4,true);
+
+        ground = map.createLayer('Ground1');
+        grassAndWater = map.createLayer('Ground2');
+        road = map.createLayer('RoadMiddle');           //obstacle pour les joueurs 
+        pavement = map.createLayer('Pavement');
+        parking = map.createLayer('Parking');           //interaction avec la voiture
+        crossRoad = map.createLayer('CrossRoad');       //interaction pour traverser la route
+        cliff = map.createLayer('Cliff');               //obstacle pour les joueurs
+        cliffClimber = map.createLayer('cliffClimber'); //interaction (monter la falaise)
+        treeA = map.createLayer('TreeBottom');          //obstacle pour les joueurs
+        fundation = map.createLayer('Fundation');       //obstacle pour le fauteuil
+        floorA = map.createLayer('1stFloor');       //obstacle pour les joueurs
 
         this.playerA = game.add.sprite(32, game.world.height - 150, 'guy');
         this.playerA.name = "playerA";
