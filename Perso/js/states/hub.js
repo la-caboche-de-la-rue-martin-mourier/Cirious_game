@@ -18,13 +18,21 @@ var hubState = {
         map.setCollisionByExclusion([0], true, obstacles);
         
 
-    	disappearBlock = game.add.sprite(-100,150,'bridge');
+    	disappearBlock = game.add.sprite(-100,147,'bridge');
     	game.physics.enable(disappearBlock, Phaser.Physics.ARCADE);
     	disappearBlock.body.immovable = true;
+        disappearBlock2 = game.add.sprite(1460,700,'bridge');
+        game.physics.enable(disappearBlock2, Phaser.Physics.ARCADE);
+        disappearBlock2.body.immovable = true;
+
 
         this.TextZone = game.add.sprite(300,400,'barrel');
         game.physics.enable(this.TextZone, Phaser.Physics.ARCADE);
         this.TextZone.body.immovable = true;
+
+        horizFire = game.add.group();
+        game.physics.enable(horizFire,Phaser.Physics.ARCADE);
+        
 
     	fire = game.add.sprite(358,128,'circulation');
     	game.physics.enable(fire, Phaser.Physics.ARCADE);
@@ -33,7 +41,8 @@ var hubState = {
         fire.animations.add('orange',[2],4,true);
         fire.animations.add('green',[3],4,true);
 
-        this.playerA = game.add.sprite(32, 100, 'guy');
+        //Players
+        this.playerA = game.add.sprite(120, 80, 'guy');
         this.playerA.name = "playerA";
         game.physics.arcade.enable(this.playerA);
         this.playerA.body.collideWorldBounds = true;
@@ -44,7 +53,7 @@ var hubState = {
         this.playerA.animations.add('frontA',[0,1,2,3],10,true);
         this.playerA.animations.add('behindA',[12,13,14,15],10,true);
             
-        this.playerB = game.add.sprite(62, 100, 'aveugle');
+        this.playerB = game.add.sprite(170, 80, 'aveugle');
         this.playerB.name = "playerB";
         game.physics.arcade.enable(this.playerB);
         this.playerB.body.collideWorldBounds = true;
@@ -74,15 +83,24 @@ var hubState = {
         visualKey = game.input.keyboard.addKey(Phaser.Keyboard.X);  
 
         //Groupe de voiture
-    	/*this.beez = game.add.group();
-    	game.physics.enable(this.beez, Phaser.Physics.ARCADE);
-    	this.beez.enableBody = true;
-    	for (var i = 0; i < 4; i++) {
-            this.thebee = caralea(this.beez,getRandomInt(5),1);
-            this.thebee.body.setSize(74, 20, -10, 0);
-    		this.thebee.body.velocity.x = -150;
+    	this.leftcarz = game.add.group();
+    	game.physics.enable(this.leftcarz, Phaser.Physics.ARCADE);
+    	this.leftcarz.enableBody = true;
+    	for (var i = 0; i < 3; i++) {
+            this.lc = caralea(this.leftcarz,getRandomInt(5),1);
+            this.lc.body.setSize(74, 20, -10, 0);
+    		this.lc.body.velocity.x = -150;
     	}
-        this.beez2 = game.add.group();
+        this.rightcarz = game.add.group();
+        game.physics.enable(this.rightcarz, Phaser.Physics.ARCADE);
+        this.rightcarz.enableBody = true;
+        for (var i = 0; i < 3; i++) {
+            this.rc = caralea(this.rightcarz,getRandomInt(5),2);
+            this.rc.body.setSize(74, 20, -10, 0);
+            this.rc.body.velocity.x = 150;
+        }
+
+        /*this.beez2 = game.add.group();
         game.physics.enable(this.beez2, Phaser.Physics.ARCADE);
         this.beez2.enableBody = true;
         for (var i = 0; i < 4; i++) {
@@ -96,8 +114,6 @@ var hubState = {
         this.banana = this.bananas.create(210, 200, 'banana');
         this.banana.scale.x= 0.12;
         this.banana.scale.y= 0.12;
-        this.banana.body.gravity.x = 0;
-        this.banana.body.gravity.y = 0;
         this.bananas.body.onCollide = new Phaser.Signal();
         this.bananas.body.onCollide.add(console.log('yes'),this);*/
 
@@ -129,6 +145,8 @@ var hubState = {
 
         disappearBlock.body.onCollide = new Phaser.Signal();
         disappearBlock.body.onCollide.add(compteisbon,this);
+        disappearBlock2.body.onCollide = new Phaser.Signal();
+        disappearBlock2.body.onCollide.add(compteisbon2,this);        
 
         fs_button = game.add.button(0,0,"fullscreenbutton",gofull,this);
 
@@ -178,13 +196,14 @@ var hubState = {
         game.physics.arcade.collide(this.playerA,bordure,null,null,this);
         game.physics.arcade.collide(this.playerA,bordure2,null,null,this);
 
-		/*
-        Collide avec les voitures
-        game.physics.arcade.collide(this.beez , obs , null , timerEntrance , this);
-		game.physics.arcade.collide(this.player , this.beez , perdu , null , this);
-		game.physics.arcade.collide(this.beez , disappearBlock , null , null, this);
-		game.physics.arcade.collide(this.beez,this.beez, null , null , this);
-        */
+		
+        //Collide avec les voitures
+        //game.physics.arcade.collide(this.leftcarz , obs , null , timerEntrance , this);
+		//game.physics.arcade.collide(this.playerA , this.leftcarz , perdu , null , this);
+		game.physics.arcade.collide(this.leftcarz , disappearBlock , null , null, this);
+		game.physics.arcade.collide(this.leftcarz,this.leftcarz, null , null , this);
+        game.physics.arcade.collide(this.rightcarz , disappearBlock2 , null , null, this);
+        game.physics.arcade.collide(this.rightcarz,this.rightcarz, null , null , this);
         
         if (cursors.left.isDown)
         {
@@ -271,10 +290,15 @@ function autorization (){
 
 function compteisbon(him,who) {
     who.kill()
-    this.beez.remove(who);
-    this.thebee = caralea(this.beez,getRandomInt(5),1);
-    this.thebee.body.velocity.x = -150;
-
+    this.leftcarz.remove(who);
+    that = caralea(this.leftcarz,getRandomInt(5),1);
+    that.body.velocity.x = -150;
+}
+function compteisbon2(him,who) {
+    who.kill()
+    this.rightcarz.remove(who);
+    that = caralea(this.rightcarz,getRandomInt(5),2);
+    that.body.velocity.x = 150;
 }
 
 function perdu(){
@@ -287,11 +311,18 @@ function getRandomInt(max) {
 
 function caralea(group,choix,which){
     if(which == 1){
-        if(choix == 0){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lb');}
-        if(choix == 1){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lgrey');}
-        if(choix == 2){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lr');}
-        if(choix == 3){item = group.create(800 + getRandomInt(200)*10 , 168 , 'lgreen');}
-        if(choix == 4){item = group.create(800 + getRandomInt(200)*10 , 168 , 'ly');}
+        if(choix == 0){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lb');}
+        if(choix == 1){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lgrey');}
+        if(choix == 2){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lr');}
+        if(choix == 3){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lgreen');}
+        if(choix == 4){item = group.create(800 + getRandomInt(200)*10 , 147 , 'ly');}
+    }
+    else if(which == 2){
+        if(choix == 0){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rb');}
+        if(choix == 1){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rgrey');}
+        if(choix == 2){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rr');}
+        if(choix == 3){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rgreen');}
+        if(choix == 4){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'ry');}
     }
     else{
         if(choix == 0){item = group.create(315 , 500 + getRandomInt(200)*10 , 'bb');}

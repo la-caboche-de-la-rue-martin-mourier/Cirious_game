@@ -22,6 +22,11 @@ var loadState = {
 		game.load.image('ly','assets/carz/jaunegauche.png',64,64);
 		game.load.image('lr','assets/carz/rougegauche.png',64,64);
 		game.load.image('lgreen','assets/carz/vertgauche.png',64,64);
+		game.load.image('rb','assets/carz/bleudroite.png',64,64);
+		game.load.image('rgrey','assets/carz/grisdroite.png',64,64);
+		game.load.image('ry','assets/carz/jaunedroite.png',64,64);
+		game.load.image('rr','assets/carz/rougedroite.png',64,64);
+		game.load.image('rgreen','assets/carz/vertdroite.png',64,64);
 		game.load.image('bb','assets/carz/bleudos.png',64,64);
 		game.load.image('bgrey','assets/carz/grisdos.png',64,64);
 		game.load.image('by','assets/carz/jaunedos.png',64,64);
