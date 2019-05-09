@@ -37,13 +37,13 @@ var hubState = {
         cross3 = game.add.sprite(625,102,'collisionpixel');
         game.physics.enable(cross3, Phaser.Physics.ARCADE);
         cross3.body.immovable = true; cross3.body.setSize(97,20,0,0);
-        cross4 = game.add.sprite(625,220,'collisionpixel');
+        cross4 = game.add.sprite(625,230,'collisionpixel');
         game.physics.enable(cross4, Phaser.Physics.ARCADE);
         cross4.body.immovable = true; cross4.body.setSize(97,20,0,0);
-        cross5 = game.add.sprite(625,300,'collisionpixel');
+        cross5 = game.add.sprite(625,390,'collisionpixel');
         game.physics.enable(cross5, Phaser.Physics.ARCADE);
         cross5.body.immovable = true; cross5.body.setSize(97,20,0,0);
-        cross6 = game.add.sprite(625,400,'collisionpixel');
+        cross6 = game.add.sprite(625,518,'collisionpixel');
         game.physics.enable(cross6, Phaser.Physics.ARCADE);
         cross6.body.immovable = true; cross6.body.setSize(97,20,0,0);
 
@@ -78,9 +78,13 @@ var hubState = {
         this.TextZone.body.immovable = true;
 
         horizFire = game.add.group();
-        game.physics.enable(horizFire,Phaser.Physics.ARCADE);
+        vertiFire = game.add.group();
         createFire(horizFire,540,175);
         createFire(horizFire,795,120);
+        createFire(vertiFire,625,65);
+        createFire(vertiFire,625,355);
+        createFire(vertiFire,710,230);
+        createFire(vertiFire,710,525);
 
 
         //Players
@@ -221,9 +225,7 @@ var hubState = {
 	update : function(){
 		
         game.debug.body(this.playerB);
-        game.debug.body(cross1); game.debug.body(cross2);
-        game.debug.body(cross3); game.debug.body(cross4); game.debug.body(cross5); game.debug.body(cross6);
-		autorization(horizFire);
+		autorization(horizFire,vertiFire,this.leftcarz,this.rightcarz,this.backcarz,this.frontcarz);
         radar(this.playerB);
         checkObjectives(game.objectives,this.playerA);
 
@@ -239,7 +241,11 @@ var hubState = {
 		
         //Collide avec les voitures
         game.physics.arcade.collide(this.leftcarz , [cross2] , null , timerEntrance , this);
-		//game.physics.arcade.collide(this.playerA , this.leftcarz , perdu , null , this);
+        game.physics.arcade.collide(this.rightcarz , [cross1] , null , timerEntrance , this);
+        game.physics.arcade.collide(this.backcarz , [cross4,cross6] , null , timerEntrance2 , this);
+        game.physics.arcade.collide(this.frontcarz , [cross3,cross5] , null , timerEntrance2 , this);
+
+
 		game.physics.arcade.collide(this.leftcarz , disappearBlock , null , null, this);
 		game.physics.arcade.collide(this.leftcarz,this.leftcarz, null , null , this);
         game.physics.arcade.collide(this.rightcarz , disappearBlock2 , null , null, this);
@@ -309,23 +315,42 @@ function updateTimer(){timer++;}
 function updateFireTimer(){fireTimer++;}
 
 function timerEntrance(){
-	if(timer <= 5 ){
+	if(timer <= 7 ){
 		return false;
 	}
 	else{
 		return true;
 	}
 }
+function timerEntrance2(){
+    if(timer <= 8 ){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
-function autorization(group){
-    if(timer <= 4){
+function autorization(group,other,left,right,back,front){
+    if(timer <= 6){
         group.callAll('play', null, 'green');
+        other.callAll('play',null,'red');
+        left.setAll('body.velocity.x',-150);
+        right.setAll('body.velocity.x',150);
     }
-    else if(timer <=6){
+    else if(timer <=8){
         group.callAll('play',null,'orange');
+        other.callAll('play',null,'red');
     }
-    else if(timer <= 9){
+    else if(timer <= 14){
         group.callAll('play',null,'red');
+        other.callAll('play',null,'green');
+        back.setAll('body.velocity.y',-150);
+        front.setAll('body.velocity.y',150);
+    }
+    else if(timer <=16){
+        group.callAll('play',null,'red');
+        other.callAll('play',null,'orange');
     }
     else{
     	timer = 0;
@@ -392,11 +417,11 @@ function caralea(group,choix,which){
         if(choix == 4){item = group.create(680 , 400 + getRandomInt(100)*30 , 'by');}       
     }
     if(which == 4){
-        if(choix == 0){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fb');}
-        if(choix == 1){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fgrey');}
-        if(choix == 2){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fr');}
-        if(choix == 3){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fgreen');}
-        if(choix == 4){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fy');}       
+        if(choix == 0){item = group.create(635 , -100 - getRandomInt(100)*30 , 'fb');}
+        if(choix == 1){item = group.create(635 , -100 - getRandomInt(100)*30 , 'fgrey');}
+        if(choix == 2){item = group.create(635 , -100 - getRandomInt(100)*30 , 'fr');}
+        if(choix == 3){item = group.create(635 , -100 - getRandomInt(100)*30 , 'fgreen');}
+        if(choix == 4){item = group.create(635 , -100 - getRandomInt(100)*30 , 'fy');}       
     }    
 
     return item
@@ -495,6 +520,7 @@ function mychoice(button){
 
 function createFire(group,x,y){
     fire = group.create(x,y,'circulation');
+    fire.scale.x = 1.2; fire.scale.y = 1.2;
     fire.animations.add('none',[0],4,true);
     fire.animations.add('red',[1],4,true);
     fire.animations.add('orange',[2],4,true);
