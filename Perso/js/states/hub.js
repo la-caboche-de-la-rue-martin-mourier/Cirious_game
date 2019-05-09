@@ -4,12 +4,19 @@ var hubState = {
 
         //game.add.image(0,0,'fondbizarre');
         map = game.add.tilemap('Town');
-        map.addTilesetImage('Supermarket','theset');
+        map.addTilesetImage('myTileset','theset');
 
-    	obs = game.add.sprite(300,150,'bridge');
-    	game.physics.enable(obs, Phaser.Physics.ARCADE);
-    	obs.body.immovable = true;
-    	obs.body.collideWorldBounds = true;
+        //game.stage.backgroundColor='#4488AA'
+        ground = map.createLayer('Ground');
+        topground = map.createLayer('TopGround')
+        obstacles = map.createLayer('Obstacles');
+        chairobstacles = map.createLayer('ChairObstacles');
+        veterinaire = map.createLayer('Veterinaire');
+        clifflimit = map.createLayer('CliffLimit');
+
+        //Collisions
+        map.setCollisionByExclusion([0], true, obstacles);
+        
 
     	disappearBlock = game.add.sprite(-100,150,'bridge');
     	game.physics.enable(disappearBlock, Phaser.Physics.ARCADE);
@@ -21,25 +28,12 @@ var hubState = {
 
     	fire = game.add.sprite(358,128,'circulation');
     	game.physics.enable(fire, Phaser.Physics.ARCADE);
-        fire.scale.x = 2 ; fire.scale.y = 2;
         fire.animations.add('none',[0],4,true);
         fire.animations.add('red',[1],4,true);
         fire.animations.add('orange',[2],4,true);
         fire.animations.add('green',[3],4,true);
 
-        ground = map.createLayer('Ground1');
-        grassAndWater = map.createLayer('Ground2');
-        road = map.createLayer('RoadMiddle');           //obstacle pour les joueurs 
-        pavement = map.createLayer('Pavement');
-        parking = map.createLayer('Parking');           //interaction avec la voiture
-        crossRoad = map.createLayer('CrossRoad');       //interaction pour traverser la route
-        cliff = map.createLayer('Cliff');               //obstacle pour les joueurs
-        cliffClimber = map.createLayer('cliffClimber'); //interaction (monter la falaise)
-        treeA = map.createLayer('TreeBottom');          //obstacle pour les joueurs
-        fundation = map.createLayer('Fundation');       //obstacle pour le fauteuil
-        floorA = map.createLayer('1stFloor');       //obstacle pour les joueurs
-
-        this.playerA = game.add.sprite(32, game.world.height - 150, 'guy');
+        this.playerA = game.add.sprite(32, 100, 'guy');
         this.playerA.name = "playerA";
         game.physics.arcade.enable(this.playerA);
         this.playerA.body.collideWorldBounds = true;
@@ -50,7 +44,7 @@ var hubState = {
         this.playerA.animations.add('frontA',[0,1,2,3],10,true);
         this.playerA.animations.add('behindA',[12,13,14,15],10,true);
             
-        this.playerB = game.add.sprite(62, game.world.height - 150, 'aveugle');
+        this.playerB = game.add.sprite(62, 100, 'aveugle');
         this.playerB.name = "playerB";
         game.physics.arcade.enable(this.playerB);
         this.playerB.body.collideWorldBounds = true;
@@ -58,6 +52,15 @@ var hubState = {
         this.playerB.scale.x = 1 ; this.playerB.scale.y = 1;
         this.playerB.animations.add('visu',[0,1,2,3,4,5,6,7,8,9],10,false);
 
+        above = map.createLayer('Above');
+        bordure = game.add.sprite(10,255,'collisionpixel');
+        game.physics.enable(bordure, Phaser.Physics.ARCADE);
+        bordure.body.immovable = true;
+        bordure.body.setSize(560,1,0,0);
+        bordure2 = game.add.sprite(576,225,'collisionpixel');
+        game.physics.enable(bordure2, Phaser.Physics.ARCADE);
+        bordure2.body.immovable = true;
+        bordure2.body.setSize(1,100,0,0);
 
         //Controles
         cursors = game.input.keyboard.createCursorKeys();
@@ -100,13 +103,23 @@ var hubState = {
 
 
         //MUSIQUE
-        /*loaded = 0;
+        loaded = 0;
         if(loaded == 0){
             music = game.add.audio('theme');
             music.loop = true ;
             music.play();
             loaded ++;
-        }*/        
+        }
+
+        //BOUTONS POUR LES DEMANDES EN MAIRIE
+        this.button1 = game.add.button(600,600,'mairie',mychoice,this,1,0,2);
+        this.button2 = game.add.button(720,600,'mairie',mychoice,this,1,0,2);
+        this.button3 = game.add.button(840,600,'mairie',mychoice,this,1,0,2);
+        this.button4 = game.add.button(960,600,'mairie',mychoice,this,1,0,2);
+        this.button5 = game.add.button(1070,600,'mairie',mychoice,this,1,0,2);
+        this.button6 = game.add.button(1180,600,'mairie',mychoice,this,1,0,2);
+        this.button1.alpha = 0; this.button2.alpha = 0; this.button3.alpha = 0; 
+        this.button4.alpha = 0; this.button5.alpha = 0; this.button6.alpha = 0; 
 
 
     	cursors = game.input.keyboard.createCursorKeys();
@@ -150,12 +163,21 @@ var hubState = {
 
 	update : function(){
 		
+        game.debug.body(this.playerB);
+        game.debug.body(bordure2);
 		autorization();
         radar(this.playerB);
         checkObjectives(game.objectives,this.playerA);
 
         game.physics.arcade.collide(this.playerA,this.playerB);
         game.physics.arcade.collide(this.playerA , this.TextZone, plainte , null , this);
+
+        //Collisions avec la map
+        game.physics.arcade.collide(this.playerA,obstacles,null,null,this);
+        game.physics.arcade.collide(this.playerB,obstacles,null,null,this);
+        game.physics.arcade.collide(this.playerA,bordure,null,null,this);
+        game.physics.arcade.collide(this.playerA,bordure2,null,null,this);
+
 		/*
         Collide avec les voitures
         game.physics.arcade.collide(this.beez , obs , null , timerEntrance , this);
@@ -290,8 +312,7 @@ function gofull() {
     }
     else
     {
-        game.scale.startFullScreen(false);              
-        create();
+        game.scale.startFullScreen(false);
     }
 
 } 
@@ -351,9 +372,25 @@ function stopping(bottle){
 }
 
 function plainte(){
-    button1 = game.add.button(100, 460, 'choice', mychoice, this, 1, 0, 2);
+    this.button1.alpha = 1;
+    this.button2.alpha = 1;
+    this.button3.alpha = 1;
+    this.button4.alpha = 1;  
+    this.button5.alpha = 1;
+    this.button6.alpha = 1;
 }
 
 function mychoice(button){
-
+    if(button == this.button1){
+        game.add.sprite(400,400,'barrel');
+    }
+    else if(button == this.button2){
+        game.add.sprite(400,400,'banana');
+    }
+    else{
+        game.add.sprite(400,400,'caddi1');
+    }
+    this.button1.alpha = 0; this.button2.alpha = 0;
+    this.button3.alpha = 0; this.button4.alpha = 0;
+    this.button5.alpha = 0; this.button6.alpha = 0;
 }
