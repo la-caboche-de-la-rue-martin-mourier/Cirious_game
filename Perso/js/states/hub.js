@@ -16,14 +16,61 @@ var hubState = {
 
         //Collisions
         map.setCollisionByExclusion([0], true, obstacles);
-        
+        bordure = game.add.sprite(10,255,'collisionpixel');
+        game.physics.enable(bordure, Phaser.Physics.ARCADE);
+        bordure.body.immovable = true;
+        bordure.body.setSize(560,1,0,0);
+        bordure2 = game.add.sprite(576,225,'collisionpixel');
+        game.physics.enable(bordure2, Phaser.Physics.ARCADE);
+        bordure2.body.immovable = true;
+        bordure2.body.setSize(1,100,0,0);
 
-    	disappearBlock = game.add.sprite(-100,147,'bridge');
+
+        //Passages Pietons
+        cross1 = game.add.sprite(550,143,'collisionpixel');
+        game.physics.enable(cross1, Phaser.Physics.ARCADE);
+        cross1.body.immovable = true; cross1.body.setSize(53,68,0,0);
+        cross2 = game.add.sprite(743,143,'collisionpixel');
+        game.physics.enable(cross2, Phaser.Physics.ARCADE);
+        cross2.body.immovable = true; cross2.body.setSize(53,68,0,0);
+        
+        cross3 = game.add.sprite(625,102,'collisionpixel');
+        game.physics.enable(cross3, Phaser.Physics.ARCADE);
+        cross3.body.immovable = true; cross3.body.setSize(97,20,0,0);
+        cross4 = game.add.sprite(625,220,'collisionpixel');
+        game.physics.enable(cross4, Phaser.Physics.ARCADE);
+        cross4.body.immovable = true; cross4.body.setSize(97,20,0,0);
+        cross5 = game.add.sprite(625,300,'collisionpixel');
+        game.physics.enable(cross5, Phaser.Physics.ARCADE);
+        cross5.body.immovable = true; cross5.body.setSize(97,20,0,0);
+        cross6 = game.add.sprite(625,400,'collisionpixel');
+        game.physics.enable(cross6, Phaser.Physics.ARCADE);
+        cross6.body.immovable = true; cross6.body.setSize(97,20,0,0);
+
+
+
+        //Reapparitions de Voitures
+    	disappearBlock = game.add.sprite(-100,147,'collisionpixel');
     	game.physics.enable(disappearBlock, Phaser.Physics.ARCADE);
     	disappearBlock.body.immovable = true;
-        disappearBlock2 = game.add.sprite(1460,700,'bridge');
+        disappearBlock2 = game.add.sprite(1460,170,'collisionpixel');
         game.physics.enable(disappearBlock2, Phaser.Physics.ARCADE);
         disappearBlock2.body.immovable = true;
+        disappearBlock3 = game.add.sprite(680,-20,'collisionpixel');
+        game.physics.enable(disappearBlock3, Phaser.Physics.ARCADE);
+        disappearBlock3.body.immovable = true;
+        disappearBlock4 = game.add.sprite(635,820,'collisionpixel');
+        game.physics.enable(disappearBlock4, Phaser.Physics.ARCADE);
+        disappearBlock4.body.immovable = true;
+
+        disappearBlock.body.onCollide = new Phaser.Signal();
+        disappearBlock.body.onCollide.add(compteisbon,this);
+        disappearBlock2.body.onCollide = new Phaser.Signal();
+        disappearBlock2.body.onCollide.add(compteisbon2,this);
+        disappearBlock3.body.onCollide = new Phaser.Signal();
+        disappearBlock3.body.onCollide.add(compteisbon3,this);
+        disappearBlock4.body.onCollide = new Phaser.Signal();
+        disappearBlock4.body.onCollide.add(compteisbon4,this);
 
 
         this.TextZone = game.add.sprite(300,400,'barrel');
@@ -32,14 +79,9 @@ var hubState = {
 
         horizFire = game.add.group();
         game.physics.enable(horizFire,Phaser.Physics.ARCADE);
-        
+        createFire(horizFire,540,175);
+        createFire(horizFire,795,120);
 
-    	fire = game.add.sprite(358,128,'circulation');
-    	game.physics.enable(fire, Phaser.Physics.ARCADE);
-        fire.animations.add('none',[0],4,true);
-        fire.animations.add('red',[1],4,true);
-        fire.animations.add('orange',[2],4,true);
-        fire.animations.add('green',[3],4,true);
 
         //Players
         this.playerA = game.add.sprite(120, 80, 'guy');
@@ -62,14 +104,7 @@ var hubState = {
         this.playerB.animations.add('visu',[0,1,2,3,4,5,6,7,8,9],10,false);
 
         above = map.createLayer('Above');
-        bordure = game.add.sprite(10,255,'collisionpixel');
-        game.physics.enable(bordure, Phaser.Physics.ARCADE);
-        bordure.body.immovable = true;
-        bordure.body.setSize(560,1,0,0);
-        bordure2 = game.add.sprite(576,225,'collisionpixel');
-        game.physics.enable(bordure2, Phaser.Physics.ARCADE);
-        bordure2.body.immovable = true;
-        bordure2.body.setSize(1,100,0,0);
+
 
         //Controles
         cursors = game.input.keyboard.createCursorKeys();
@@ -99,14 +134,22 @@ var hubState = {
             this.rc.body.setSize(74, 20, -10, 0);
             this.rc.body.velocity.x = 150;
         }
-
-        /*this.beez2 = game.add.group();
-        game.physics.enable(this.beez2, Phaser.Physics.ARCADE);
-        this.beez2.enableBody = true;
-        for (var i = 0; i < 4; i++) {
-            this.thebee = caralea(this.beez2,getRandomInt(5),2);
-            this.thebee.body.velocity.y = -150;
-        }*/
+        this.backcarz = game.add.group();
+        game.physics.enable(this.backcarz, Phaser.Physics.ARCADE);
+        this.backcarz.enableBody = true;
+        for (var i = 0; i < 3; i++) {
+            this.bc = caralea(this.backcarz,getRandomInt(5),3);
+            this.bc.body.setSize(32,32,0,0);
+            this.bc.body.velocity.y = -150;
+        }
+        this.frontcarz = game.add.group();
+        game.physics.enable(this.frontcarz, Phaser.Physics.ARCADE);
+        this.frontcarz.enableBody = true;
+        for (var i = 0; i < 3; i++) {
+            this.fc = caralea(this.frontcarz,getRandomInt(5),4);
+            this.fc.body.setSize(32,32,0,0);
+            this.fc.body.velocity.y = 150;
+        }
         ////////////////////////////////////////////////////////
 
         /*this.bananas = game.add.group();
@@ -143,10 +186,6 @@ var hubState = {
         fireTimer = 0;
         game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
 
-        disappearBlock.body.onCollide = new Phaser.Signal();
-        disappearBlock.body.onCollide.add(compteisbon,this);
-        disappearBlock2.body.onCollide = new Phaser.Signal();
-        disappearBlock2.body.onCollide.add(compteisbon2,this);        
 
         fs_button = game.add.button(0,0,"fullscreenbutton",gofull,this);
 
@@ -182,8 +221,9 @@ var hubState = {
 	update : function(){
 		
         game.debug.body(this.playerB);
-        game.debug.body(bordure2);
-		autorization();
+        game.debug.body(cross1); game.debug.body(cross2);
+        game.debug.body(cross3); game.debug.body(cross4); game.debug.body(cross5); game.debug.body(cross6);
+		autorization(horizFire);
         radar(this.playerB);
         checkObjectives(game.objectives,this.playerA);
 
@@ -198,12 +238,16 @@ var hubState = {
 
 		
         //Collide avec les voitures
-        //game.physics.arcade.collide(this.leftcarz , obs , null , timerEntrance , this);
+        game.physics.arcade.collide(this.leftcarz , [cross2] , null , timerEntrance , this);
 		//game.physics.arcade.collide(this.playerA , this.leftcarz , perdu , null , this);
 		game.physics.arcade.collide(this.leftcarz , disappearBlock , null , null, this);
 		game.physics.arcade.collide(this.leftcarz,this.leftcarz, null , null , this);
         game.physics.arcade.collide(this.rightcarz , disappearBlock2 , null , null, this);
         game.physics.arcade.collide(this.rightcarz,this.rightcarz, null , null , this);
+        game.physics.arcade.collide(this.backcarz , disappearBlock3 , null , null, this);
+        game.physics.arcade.collide(this.backcarz,this.backcarz, null , null , this);
+        game.physics.arcade.collide(this.frontcarz , disappearBlock4 , null , null, this);
+        game.physics.arcade.collide(this.frontcarz,this.frontcarz, null , null , this);
         
         if (cursors.left.isDown)
         {
@@ -273,15 +317,15 @@ function timerEntrance(){
 	}
 }
 
-function autorization (){
+function autorization(group){
     if(timer <= 4){
-        fire.animations.play('green');
+        group.callAll('play', null, 'green');
     }
     else if(timer <=6){
-        fire.animations.play('orange');
+        group.callAll('play',null,'orange');
     }
     else if(timer <= 9){
-        fire.animations.play('red');
+        group.callAll('play',null,'red');
     }
     else{
     	timer = 0;
@@ -289,15 +333,31 @@ function autorization (){
 }
 
 function compteisbon(him,who) {
+    console.log('compteisbon');
     who.kill()
     this.leftcarz.remove(who);
     that = caralea(this.leftcarz,getRandomInt(5),1);
     that.body.velocity.x = -150;
 }
 function compteisbon2(him,who) {
+    console.log('compteisbon2');
     who.kill()
     this.rightcarz.remove(who);
     that = caralea(this.rightcarz,getRandomInt(5),2);
+    that.body.velocity.x = 150;
+}
+function compteisbon3(him,who) {
+    console.log('compteisbon3');
+    who.kill()
+    this.backcarz.remove(who);
+    that = caralea(this.backcarz,getRandomInt(5),3);
+    that.body.velocity.x = 150;
+}
+function compteisbon4(him,who) {
+    console.log('compteisbon4');
+    who.kill()
+    this.frontcarz.remove(who);
+    that = caralea(this.frontcarz,getRandomInt(5),4);
     that.body.velocity.x = 150;
 }
 
@@ -311,26 +371,33 @@ function getRandomInt(max) {
 
 function caralea(group,choix,which){
     if(which == 1){
-        if(choix == 0){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lb');}
-        if(choix == 1){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lgrey');}
-        if(choix == 2){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lr');}
-        if(choix == 3){item = group.create(800 + getRandomInt(200)*10 , 147 , 'lgreen');}
-        if(choix == 4){item = group.create(800 + getRandomInt(200)*10 , 147 , 'ly');}
+        if(choix == 0){item = group.create(800 + getRandomInt(100)*30 , 147 , 'lb');}
+        if(choix == 1){item = group.create(800 + getRandomInt(100)*30 , 147 , 'lgrey');}
+        if(choix == 2){item = group.create(800 + getRandomInt(100)*30 , 147 , 'lr');}
+        if(choix == 3){item = group.create(800 + getRandomInt(100)*30 , 147 , 'lgreen');}
+        if(choix == 4){item = group.create(800 + getRandomInt(100)*30 , 147 , 'ly');}
     }
-    else if(which == 2){
-        if(choix == 0){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rb');}
-        if(choix == 1){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rgrey');}
-        if(choix == 2){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rr');}
-        if(choix == 3){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'rgreen');}
-        if(choix == 4){item = group.create(-100 - getRandomInt(200)*10 , 170 , 'ry');}
+    if(which == 2){
+        if(choix == 0){item = group.create(-100 - getRandomInt(100)*30 , 170 , 'rb');}
+        if(choix == 1){item = group.create(-100 - getRandomInt(100)*30 , 170 , 'rgrey');}
+        if(choix == 2){item = group.create(-100 - getRandomInt(100)*30 , 170 , 'rr');}
+        if(choix == 3){item = group.create(-100 - getRandomInt(100)*30 , 170 , 'rgreen');}
+        if(choix == 4){item = group.create(-100 - getRandomInt(100)*30 , 170 , 'ry');}
     }
-    else{
-        if(choix == 0){item = group.create(315 , 500 + getRandomInt(200)*10 , 'bb');}
-        if(choix == 1){item = group.create(315 , 500 + getRandomInt(200)*10 , 'bgrey');}
-        if(choix == 2){item = group.create(315 , 500 + getRandomInt(200)*10 , 'br');}
-        if(choix == 3){item = group.create(315 , 500 + getRandomInt(200)*10 , 'bgreen');}
-        if(choix == 4){item = group.create(315 , 500 + getRandomInt(200)*10 , 'by');}       
+    if(which == 3){
+        if(choix == 0){item = group.create(680 , 400 + getRandomInt(100)*30 , 'bb');}
+        if(choix == 1){item = group.create(680 , 400 + getRandomInt(100)*30 , 'bgrey');}
+        if(choix == 2){item = group.create(680 , 400 + getRandomInt(100)*30 , 'br');}
+        if(choix == 3){item = group.create(680 , 400 + getRandomInt(100)*30 , 'bgreen');}
+        if(choix == 4){item = group.create(680 , 400 + getRandomInt(100)*30 , 'by');}       
     }
+    if(which == 4){
+        if(choix == 0){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fb');}
+        if(choix == 1){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fgrey');}
+        if(choix == 2){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fr');}
+        if(choix == 3){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fgreen');}
+        if(choix == 4){item = group.create(635 , 0 - getRandomInt(100)*30 , 'fy');}       
+    }    
 
     return item
 }
@@ -424,4 +491,12 @@ function mychoice(button){
     this.button1.alpha = 0; this.button2.alpha = 0;
     this.button3.alpha = 0; this.button4.alpha = 0;
     this.button5.alpha = 0; this.button6.alpha = 0;
+}
+
+function createFire(group,x,y){
+    fire = group.create(x,y,'circulation');
+    fire.animations.add('none',[0],4,true);
+    fire.animations.add('red',[1],4,true);
+    fire.animations.add('orange',[2],4,true);
+    fire.animations.add('green',[3],4,true);
 }

@@ -32,6 +32,11 @@ var loadState = {
 		game.load.image('by','assets/carz/jaunedos.png',64,64);
 		game.load.image('br','assets/carz/rougedos.png',64,64);
 		game.load.image('bgreen','assets/carz/vertdos.png',64,64);
+		game.load.image('fb','assets/carz/bleuface.png',64,64);
+		game.load.image('fgrey','assets/carz/grisface.png',64,64);
+		game.load.image('fy','assets/carz/jauneface.png',64,64);
+		game.load.image('fr','assets/carz/rougeface.png',64,64);
+		game.load.image('fgreen','assets/carz/vertface.png',64,64);
 
         game.load.image('tileset','assets/supermarket.png');
         game.load.image('barrel','assets/barel.png');
