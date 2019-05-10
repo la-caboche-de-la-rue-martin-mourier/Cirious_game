@@ -1,0 +1,14 @@
+menu
+
+game.music.pause();
+
+	loaded = 0;
+        if(loaded == 0){
+			game.music = game.add.audio('thememenu');
+            game.music.loop = true ;
+            game.music.play();
+            loaded ++;
+        }
+
+		game.load.audio('themegame','assets/sound/themegame.mp3');
+		game.load.audio('thememenu','assets/sound/thememenu.mp3');

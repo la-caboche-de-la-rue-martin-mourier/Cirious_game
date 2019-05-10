@@ -181,7 +181,7 @@ var hubState = {
         //MUSIQUE
         loaded = 0;
         if(loaded == 0){
-            music = game.add.audio('theme');
+            music = game.add.audio('themegame');
             music.loop = true ;
             music.play();
             loaded ++;
