@@ -324,6 +324,13 @@ var hubState = {
         game.physics.arcade.collide(this.playerA, objective5, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective6, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective7, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective1, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective2, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective3, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective4, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective5, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective6, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective7, null, null ,this);
 		
         game.debug.body(this.playerB);
 		autorization(horizFire,vertiFire,this.leftcarz,this.rightcarz,this.backcarz,this.frontcarz);
