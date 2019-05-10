@@ -8,9 +8,18 @@ var menuState = {
 
 		game.add.button(500,300,'playbutton',this.start);
 
+		loaded = 0;
+        if(loaded === 0){
+        	game.music = game.add.audio('thememenu');
+            game.music.loop = true ;
+            game.music.play();
+            loaded ++;
+        }
+
 	},
 
 	start : function(){
+		game.music.stop();
 		game.state.start('hub');
 	},
 

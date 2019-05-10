@@ -10,6 +10,7 @@ var loadState = {
 
 		game.load.spritesheet('gabe','assets/rpg/chars/gabe.png',24,24);
 		game.load.spritesheet('circulation','assets/feutricolore.png',32,32);
+		game.load.spritesheet('circulation2','assets/fireonde.png',64,64);
 		
 		game.load.image('hat','assets/rpg/chars/hat-guy/hat-guy.png',16,22);
 		game.load.image('bridge','assets/rpg/props/bridge.png',58,56);
@@ -49,7 +50,8 @@ var loadState = {
         game.load.spritesheet('guy','assets/guy.png',64,64);
         game.load.spritesheet('aveugleetsonchien','assets/aveugleetsonchien.png',64,64);
         game.load.spritesheet('feutricolore','assets/feutricolore.png',32,32);
-        game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
+		game.load.audio('themegame','assets/sound/themegame.mp3');
+		game.load.audio('thememenu','assets/sound/thememenu.mp3');
 		
 		game.load.image('playbutton' , 'assets/playbu.jpg',170,170);
 		game.load.spritesheet('choice','assets/choice.png',64,64);
