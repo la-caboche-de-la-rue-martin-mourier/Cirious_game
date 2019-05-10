@@ -10,7 +10,6 @@ var loadState = {
 
 		game.load.spritesheet('gabe','assets/rpg/chars/gabe.png',24,24);
 		game.load.spritesheet('circulation','assets/feutricolore.png',32,32);
-		game.load.spritesheet('circulation2','assets/fireonde.png',64,64);
 		
 		game.load.image('hat','assets/rpg/chars/hat-guy/hat-guy.png',16,22);
 		game.load.image('bridge','assets/rpg/props/bridge.png',58,56);
@@ -44,16 +43,13 @@ var loadState = {
         game.load.image('banana','assets/Banana.png')
         game.load.image('bottle','assets/bottle.png');
         game.load.image('caddi1','assets/caddi1.png');
-        game.load.image('caddi3','assets/caddi3.png');
-        game.load.image('canard','assets/canard.png');
-        game.load.image('grass','assets/grass.png');
+        game.load.image('caddi3','assets/caddi3.png')
         game.load.image('obs','assets/Obstacles.png');
         game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
         game.load.spritesheet('guy','assets/guy.png',64,64);
         game.load.spritesheet('aveugleetsonchien','assets/aveugleetsonchien.png',64,64);
         game.load.spritesheet('feutricolore','assets/feutricolore.png',32,32);
-		game.load.audio('themegame','assets/sound/themegame.mp3');
-		game.load.audio('thememenu','assets/sound/thememenu.mp3');
+        game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
 		
 		game.load.image('playbutton' , 'assets/playbu.jpg',170,170);
 		game.load.spritesheet('choice','assets/choice.png',64,64);
@@ -62,6 +58,9 @@ var loadState = {
 		game.load.image('zonetext', 'assets/zonetext.png',100,100);
 		game.load.image('oui', 'assets/oui.png',64, 64);
 		game.load.image('no', 'assets/no.png',64, 64);
+
+		game.load.spritesheet('startbutton','assets/startclick.png',200,200);
+		game.load.image('wallmenu','assets/wallmenu.png',387,260);
 	},
 
 	create : function(){
