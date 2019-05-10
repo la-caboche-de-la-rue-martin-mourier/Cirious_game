@@ -96,6 +96,11 @@ var hubState = {
         this.playerA.animations.add('rightA',[4,5,6,7],10,true);
         this.playerA.animations.add('frontA',[0,1,2,3],10,true);
         this.playerA.animations.add('behindA',[12,13,14,15],10,true);
+        //this.playerA.animations.add('frontbag',[16,17,18,19],10,true);
+        //this.playerA.animations.add('rightbag',[20,21,22,23],10,true);
+        //this.playerA.animations.add('leftbag',[24,25,26,27],10,true);
+        this.playerA.animations.add('victory',[28,29,30,31,32,33,34,35,36,37],10,true);
+        //this.playerA.animations.add('behindbag',[38,39,40,41],10,true);
             
         this.playerB = game.add.sprite(170, 80, 'aveugleetsonchien');
         this.playerB.name = "playerB";
@@ -291,7 +296,7 @@ var hubState = {
         objective[1] = "Aller à la plage";
         objective[2] = "objective7";
         game.objectives.push(objective);
-        objective7 = game.add.sprite(800,80,'collisionpixel');
+        objective7 = game.add.sprite(1100,650,'collisionpixel');
         game.physics.enable(objective7, Phaser.Physics.ARCADE);
         objective7.body.immovable = true;
         objective7.body.setSize(37,20,0,0);
@@ -354,6 +359,9 @@ var hubState = {
         game.physics.arcade.collide(this.playerB,obstacles,null,null,this);
         game.physics.arcade.collide(this.playerA,bordure,null,null,this);
         game.physics.arcade.collide(this.playerA,bordure2,null,null,this);
+        game.physics.arcade.collide(this.playerB,bordure,null,null,this);
+        game.physics.arcade.collide(this.playerB,bordure2,null,null,this);
+        game.physics.arcade.collide(this.playerA,chairobstacles,null,null,this);
 
 		
         //Collide avec les voitures
@@ -396,10 +404,11 @@ var hubState = {
         {
             this.playerA.body.velocity.y = 120;
             this.playerA.body.velocity.x = 0;
-            this.playerA.animations.play('frontA');  
+            this.playerA.animations.play('frontA'); 
         }
         else if(cursors.up.isDown){
             this.playerA.body.velocity.y = -120; this.playerA.body.velocity.x = 0;
+
             this.playerA.animations.play('behindA');
         }
         else
@@ -643,8 +652,8 @@ function checkObjectives4(){
         game.objectives.current.text =game.objectives[1][1];
         game.objectives.shift();
     }
-
 }
+    
 function checkObjectives5(){
     var complete = false;
     if(game.objectives[0][2] === "objective5"){
