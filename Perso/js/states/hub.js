@@ -105,12 +105,15 @@ var hubState = {
         this.playerB.body.collideWorldBounds = true;
         this.playerB.body.setSize(32, 32, 16, 16);
         this.playerB.scale.x = 0.7 ; this.playerB.scale.y = 0.7;
-        this.playerB.animations.add('visu',[20,21,22,23,24,25,26,27,28],10,false);
+        visu = this.playerB.animations.add('visu',[20,21,22,23,24,25,26,27],10,false);//C'est normal Marc
         this.playerB.animations.add('frontchien',[0,1,2,3],10,true);
         this.playerB.animations.add('behindchien',[4,5,6,7],10,true);
         this.playerB.animations.add('rightchien'[8,9,10,11,12,13],10,true);
         this.playerB.animations.add('leftchien'[14,15,16,17,18,19],10,true);
         this.playerB.animations.add('victory'[29,30,31,32,33,34],10,true);
+        this.playerB.alpha = 0;
+
+        visu.onComplete.add(function(){this.playerB.alpha = 0;},this);
         /*
         this.playerB = game.add.sprite(170, 80, 'aveugle');
         this.playerB.scale.x = 1 ; this.playerB.scale.y = 1;
@@ -327,7 +330,6 @@ var hubState = {
         game.debug.body(objective6);
         game.debug.body(objective7);
 
-        game.physics.arcade.collide(this.playerA, objective1, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective2, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective3, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective4, null, null ,this);
@@ -493,14 +495,14 @@ function compteisbon3(him,who) {
     who.kill()
     this.backcarz.remove(who);
     that = caralea(this.backcarz,getRandomInt(5),3);
-    that.body.velocity.x = 150;
+    that.body.velocity.y = 150;
 }
 function compteisbon4(him,who) {
     console.log('compteisbon4');
     who.kill()
     this.frontcarz.remove(who);
     that = caralea(this.frontcarz,getRandomInt(5),4);
-    that.body.velocity.x = 150;
+    that.body.velocity.y = 150;
 }
 
 function perdu(){
@@ -559,6 +561,7 @@ function gofull() {
 
 function radar(player){
     if(visualKey.isDown && timer >= 3){
+        player.alpha = 1;
         player.animations.play('visu',10,false);
         timer = 0;
     }
@@ -717,10 +720,11 @@ function mychoice(button){
 }
 
 function createFire(group,x,y){
-    fire = group.create(x,y,'circulation');
+    fire = group.create(x,y,'circulation2');
     fire.scale.x = 1.2; fire.scale.y = 1.2;
-    fire.animations.add('none',[0],4,true);
-    fire.animations.add('red',[1],4,true);
-    fire.animations.add('orange',[2],4,true);
-    fire.animations.add('green',[3],4,true);
+    fire.animations.add('none',[0],22,true);
+    fire.animations.add('red',[1],22,true);
+    fire.animations.add('orange',[2],22,true);
+    fire.animations.add('green',[3],22,true);
+    fire.animations.add('ondered',[4,5,6,7,8,9],22,true);
 }
