@@ -44,7 +44,9 @@ var loadState = {
         game.load.image('banana','assets/Banana.png')
         game.load.image('bottle','assets/bottle.png');
         game.load.image('caddi1','assets/caddi1.png');
-        game.load.image('caddi3','assets/caddi3.png')
+        game.load.image('caddi3','assets/caddi3.png');
+        game.load.image('canard','assets/canard.png');
+        game.load.image('grass','assets/grass.png');
         game.load.image('obs','assets/Obstacles.png');
         game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
         game.load.spritesheet('guy','assets/guy.png',64,64);

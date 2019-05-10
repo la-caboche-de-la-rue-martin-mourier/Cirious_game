@@ -1,6 +1,8 @@
 var hubState = {
 
 	create : function(){
+        this.whichFire = true;
+        this.rampe = false;
 
         //game.add.image(0,0,'fondbizarre');
         map = game.add.tilemap('Town');
@@ -71,11 +73,6 @@ var hubState = {
         disappearBlock3.body.onCollide.add(compteisbon3,this);
         disappearBlock4.body.onCollide = new Phaser.Signal();
         disappearBlock4.body.onCollide.add(compteisbon4,this);
-
-
-        this.TextZone = game.add.sprite(300,400,'barrel');
-        game.physics.enable(this.TextZone, Phaser.Physics.ARCADE);
-        this.TextZone.body.immovable = true;
 
         horizFire = game.add.group();
         vertiFire = game.add.group();
@@ -188,14 +185,13 @@ var hubState = {
         }
 
         //BOUTONS POUR LES DEMANDES EN MAIRIE
-        this.button1 = game.add.button(600,600,'mairie',mychoice,this,1,0,2);
-        this.button2 = game.add.button(720,600,'mairie',mychoice,this,1,0,2);
-        this.button3 = game.add.button(840,600,'mairie',mychoice,this,1,0,2);
-        this.button4 = game.add.button(960,600,'mairie',mychoice,this,1,0,2);
-        this.button5 = game.add.button(1070,600,'mairie',mychoice,this,1,0,2);
-        this.button6 = game.add.button(1180,600,'mairie',mychoice,this,1,0,2);
+        this.button1 = game.add.button(780,650,'mairie',mychoice,this,1,0,2);
+        this.button2 = game.add.button(900,650,'mairie',mychoice,this,1,0,2);
+        this.button3 = game.add.button(1020,650,'mairie',mychoice,this,1,0,2);
+        this.button4 = game.add.button(1140,650,'mairie',mychoice,this,1,0,2);
+        this.button5 = game.add.button(1260,650,'mairie',mychoice,this,1,0,2);
         this.button1.alpha = 0; this.button2.alpha = 0; this.button3.alpha = 0; 
-        this.button4.alpha = 0; this.button5.alpha = 0; this.button6.alpha = 0; 
+        this.button4.alpha = 0; this.button5.alpha = 0;
 
 
     	cursors = game.input.keyboard.createCursorKeys();
@@ -336,7 +332,7 @@ var hubState = {
         game.physics.arcade.collide(this.playerA, objective5, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective6, null, null ,this);
         game.physics.arcade.collide(this.playerA, objective7, null, null ,this);
-        game.physics.arcade.collide(this.playerB, objective1, null, null ,this);
+        game.physics.arcade.collide(this.playerB, objective1, plainte, null ,this);
         game.physics.arcade.collide(this.playerB, objective2, null, null ,this);
         game.physics.arcade.collide(this.playerB, objective3, null, null ,this);
         game.physics.arcade.collide(this.playerB, objective4, null, null ,this);
@@ -345,11 +341,10 @@ var hubState = {
         game.physics.arcade.collide(this.playerB, objective7, null, null ,this);
 		
         game.debug.body(this.playerB);
-		autorization(horizFire,vertiFire,this.leftcarz,this.rightcarz,this.backcarz,this.frontcarz);
+		autorization(horizFire,vertiFire,this.leftcarz,this.rightcarz,this.backcarz,this.frontcarz,this.whichFire);
         radar(this.playerB);
 
         game.physics.arcade.collide(this.playerA,this.playerB);
-        game.physics.arcade.collide(this.playerA , this.TextZone, plainte , null , this);
 
         //Collisions avec la map
         game.physics.arcade.collide(this.playerA,obstacles,null,null,this);
@@ -450,25 +445,45 @@ function timerEntrance2(){
     }
 }
 
-function autorization(group,other,left,right,back,front){
+function autorization(group,other,left,right,back,front,condition){
     if(timer <= 6){
         group.callAll('play', null, 'green');
-        other.callAll('play',null,'red');
+        if(condition == true){
+            other.callAll('play',null,'red');
+        }
+        else{
+            other.callAll('play',null,'ondered');
+        }
         left.setAll('body.velocity.x',-150);
         right.setAll('body.velocity.x',150);
     }
     else if(timer <=8){
         group.callAll('play',null,'orange');
-        other.callAll('play',null,'red');
+        if(condition == true){
+            other.callAll('play',null,'red');
+        }
+        else{
+            other.callAll('play',null,'ondered');
+        }
     }
     else if(timer <= 14){
-        group.callAll('play',null,'red');
+        if(condition == true){
+            group.callAll('play',null,'red');
+        }
+        else{
+            group.callAll('play',null,'ondered');
+        }
         other.callAll('play',null,'green');
         back.setAll('body.velocity.y',-150);
         front.setAll('body.velocity.y',150);
     }
     else if(timer <=16){
-        group.callAll('play',null,'red');
+        if(condition == true){
+            group.callAll('play',null,'red');
+        }
+        else{
+            group.callAll('play',null,'ondered');
+        }
         other.callAll('play',null,'orange');
     }
     else{
@@ -570,7 +585,7 @@ function radar(player){
 
 function checkObjectives1(){
     var complete = false;
-    if(game.objectives[0][2] === "objective1"){
+    if(game.objectives[0][2] === "objective1" && this.rampe == true ){
         game.objectives[0][0] = true;
         complete = true;
     }
@@ -701,30 +716,37 @@ function plainte(){
     this.button3.alpha = 1;
     this.button4.alpha = 1;  
     this.button5.alpha = 1;
-    this.button6.alpha = 1;
 }
 
 function mychoice(button){
     if(button == this.button1){
-        game.add.sprite(400,400,'barrel');
+        this.whichFire = !(this.whichFire);
+        console.log(this.whichFire);
     }
     else if(button == this.button2){
-        game.add.sprite(400,400,'banana');
+        this.rampe = true;
+    }
+    else if(button == this.button3){
+        game.add.sprite(210+(getRandomInt(7)*20),630+(getRandomInt(3)*20),'canard');
+    }
+    else if(button == this.button4){
+        grass = game.add.sprite(1000,300,'grass');
+        grass.scale.x = 3 ; grass.scale.y = 7;
     }
     else{
         game.add.sprite(400,400,'caddi1');
     }
     this.button1.alpha = 0; this.button2.alpha = 0;
     this.button3.alpha = 0; this.button4.alpha = 0;
-    this.button5.alpha = 0; this.button6.alpha = 0;
+    this.button5.alpha = 0;
 }
 
 function createFire(group,x,y){
     fire = group.create(x,y,'circulation2');
     fire.scale.x = 1.2; fire.scale.y = 1.2;
-    fire.animations.add('none',[0],22,true);
-    fire.animations.add('red',[1],22,true);
-    fire.animations.add('orange',[2],22,true);
-    fire.animations.add('green',[3],22,true);
-    fire.animations.add('ondered',[4,5,6,7,8,9],22,true);
+    fire.animations.add('none',[0],6,true);
+    fire.animations.add('red',[1],6,true);
+    fire.animations.add('orange',[2],6,true);
+    fire.animations.add('green',[3],6,true);
+    fire.animations.add('ondered',[4,5,6,7,8,9],4,true);
 }
