@@ -52,6 +52,11 @@ var hubState = {
         this.playerA.animations.add('rightA',[4,5,6,7],10,true);
         this.playerA.animations.add('frontA',[0,1,2,3],10,true);
         this.playerA.animations.add('behindA',[12,13,14,15],10,true);
+        this.playerA.animations.add('frontbag',[16,17,18,19],10,true);
+        this.playerA.animations.add('rightbag',[20,21,22,23],10,true);
+        this.playerA.animations.add('leftbag',[24,25,26,27],10,true);
+        this.playerA.animations.add('victory',[28,29,30,31,32,33,34,35,36,37],10,true);
+        this.playerA.animations.add('behindbag',[38,39,40,41],10,true);
             
         this.playerB = game.add.sprite(170, 80, 'aveugle');
         this.playerB.name = "playerB";
@@ -122,7 +127,7 @@ var hubState = {
         //MUSIQUE
         loaded = 0;
         if(loaded == 0){
-            music = game.add.audio('theme');
+            music = game.add.audio('themegame');
             music.loop = true ;
             music.play();
             loaded ++;
@@ -232,6 +237,7 @@ var hubState = {
         objective[0] = false;
         objective[1] = "Passer à la maison déposer les courses";
         objective[2] = "objective6";
+        this.playerA.bag = false
         game.objectives.push(objective);
         objective6 = game.add.sprite(158,80,'collisionpixel');
         game.physics.enable(objective6, Phaser.Physics.ARCADE);
@@ -265,6 +271,8 @@ var hubState = {
         oui.scale.setTo(0.2,0.2);
         var no = game.add.image(785, 34,'no');
         no.scale.setTo(0.2,0.2);
+        game.timerblabla = 0;
+        game.time.events.loop(Phaser.Timer.SECOND, function(){game.timerblabla++;}, this);
 
         game.objectives.last = game.add.text(810, 16, "",{ fontSize: '16px', fill: 'white'});
         game.objectives.current = game.add.text(810, 32, game.objectives[0][1],{ fontSize: '16px', fill: 'white'});
@@ -316,21 +324,37 @@ var hubState = {
         if (cursors.left.isDown)
         {
             this.playerA.body.velocity.x = -120; this.playerA.body.velocity.y = 0;
-            this.playerA.animations.play('leftA');
+            if(this.playerA.bag){
+                this.playerA.animations.play('leftbag');
+            }
+            else{
+                this.playerA.animations.play('leftA');
+            }
         }
         else if (cursors.right.isDown)
         {
             this.playerA.body.velocity.x = 120; this.playerA.body.velocity.y = 0;
-            this.playerA.animations.play('rightA');
+            if(this.playerA.bag){
+                this.playerA.animations.play('rightbag');
+            }
+            else{
+                this.playerA.animations.play('rightA');
+            }
         }
         else if (cursors.down.isDown)
         {
             this.playerA.body.velocity.y = 120;
             this.playerA.body.velocity.x = 0;
-            this.playerA.animations.play('frontA');  
+            if(this.playerA.bag){
+                this.playerA.animations.play('frontbag');
+            }
+            else{
+                this.playerA.animations.play('frontA'); 
+            } 
         }
         else if(cursors.up.isDown){
             this.playerA.body.velocity.y = -120; this.playerA.body.velocity.x = 0;
+
             this.playerA.animations.play('behindA');
         }
         else
@@ -509,6 +533,7 @@ function checkObjectives4(){
         complete = true;
     }
     if(complete){
+        this.playerA.bag = true;
         game.objectives.last.text = game.objectives.current.text;
         game.objectives.current.text =game.objectives[1][1];
         game.objectives.shift();
@@ -536,6 +561,7 @@ function checkObjectives6(){
         complete = true;
     }
     if(complete){
+        this.playerA.bag = false;
         game.objectives.last.text = game.objectives.current.text;
         game.objectives.current.text =game.objectives[1][1];
         game.objectives.shift();

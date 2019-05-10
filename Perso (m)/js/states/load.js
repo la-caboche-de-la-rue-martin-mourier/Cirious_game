@@ -44,12 +44,14 @@ var loadState = {
         game.load.spritesheet('guy','assets/guy.png',64,64);
         game.load.spritesheet('aveugle','assets/ondeblack.png',64,64);
         game.load.spritesheet('feutricolore','assets/feutricolore.png',32,32);
-        game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
+		game.load.audio('thememenu','assets/sound/thememenu.mp3');
+		game.load.audio('themegame','assets/sound/themegame.mp3');
+		
 		
 		game.load.image('playbutton' , 'assets/playbu.jpg',170,170);
 		game.load.spritesheet('choice','assets/choice.png',64,64);
 		game.load.spritesheet('mairie','assets/mairie.png',100,100);
-		game.load.image('zonetext', 'assets/zonetext.png',100,100);
+		game.load.image('zonetext', 'assets/zonetext.png',450,40);
 		game.load.image('oui', 'assets/oui.png',64, 64);
 		game.load.image('no', 'assets/no.png',64, 64);
 	},
