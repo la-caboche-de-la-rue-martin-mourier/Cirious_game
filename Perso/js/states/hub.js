@@ -328,7 +328,6 @@ var hubState = {
         game.debug.body(this.playerB);
 		autorization(horizFire,vertiFire,this.leftcarz,this.rightcarz,this.backcarz,this.frontcarz);
         radar(this.playerB);
-        checkObjectives(game.objectives,this.playerA);
 
         game.physics.arcade.collide(this.playerA,this.playerB);
         game.physics.arcade.collide(this.playerA , this.TextZone, plainte , null , this);
