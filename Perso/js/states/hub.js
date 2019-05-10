@@ -99,13 +99,23 @@ var hubState = {
         this.playerA.animations.add('frontA',[0,1,2,3],10,true);
         this.playerA.animations.add('behindA',[12,13,14,15],10,true);
             
-        this.playerB = game.add.sprite(170, 80, 'aveugle');
+        this.playerB = game.add.sprite(170, 80, 'aveugleetsonchien');
         this.playerB.name = "playerB";
         game.physics.arcade.enable(this.playerB);
         this.playerB.body.collideWorldBounds = true;
         this.playerB.body.setSize(32, 32, 16, 16);
+        this.playerB.scale.x = 0.7 ; this.playerB.scale.y = 0.7;
+        this.playerB.animations.add('visu',[20,21,22,23,24,25,26,27,28],10,false);
+        this.playerB.animations.add('frontchien',[0,1,2,3],10,true);
+        this.playerB.animations.add('behindchien',[4,5,6,7],10,true);
+        this.playerB.animations.add('rightchien'[8,9,10,11,12,13],10,true);
+        this.playerB.animations.add('leftchien'[14,15,16,17,18,19],10,true);
+        this.playerB.animations.add('victory'[29,30,31,32,33,34],10,true);
+        /*
+        this.playerB = game.add.sprite(170, 80, 'aveugle');
         this.playerB.scale.x = 1 ; this.playerB.scale.y = 1;
         this.playerB.animations.add('visu',[0,1,2,3,4,5,6,7,8,9],10,false);
+        */
 
         above = map.createLayer('Above');
 

@@ -47,7 +47,7 @@ var loadState = {
         game.load.image('obs','assets/Obstacles.png');
         game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
         game.load.spritesheet('guy','assets/guy.png',64,64);
-        game.load.spritesheet('aveugle','assets/ondeblack.png',64,64);
+        game.load.spritesheet('aveugleetsonchien','assets/aveugleetsonchien.png',64,64);
         game.load.spritesheet('feutricolore','assets/feutricolore.png',32,32);
         game.load.audio('theme','assets/sounds/projet_jeux_video.mp3');
 		
