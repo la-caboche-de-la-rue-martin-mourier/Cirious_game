@@ -3,6 +3,7 @@ var hubState = {
 	create : function(){
         this.whichFire = true;
         this.rampe = false;
+        this.poulpo ; this.poulpoExist = false;
 
         //game.add.image(0,0,'fondbizarre');
         map = game.add.tilemap('Town');
@@ -318,6 +319,8 @@ var hubState = {
 
 	update : function(){
 
+        if(this.poulpoExist == true){this.poulpo.animations.play('nage');}
+
         game.debug.body(objective1);
         game.debug.body(objective2);
         game.debug.body(objective3);
@@ -358,6 +361,16 @@ var hubState = {
         game.physics.arcade.collide(this.rightcarz , [cross1] , null , timerEntrance , this);
         game.physics.arcade.collide(this.backcarz , [cross4,cross6] , null , timerEntrance2 , this);
         game.physics.arcade.collide(this.frontcarz , [cross3,cross5] , null , timerEntrance2 , this);
+
+        game.physics.arcade.collide(this.leftcarz , this.playerA, null, null , this);
+        game.physics.arcade.collide(this.rightcarz , this.playerA, null, null , this);
+        game.physics.arcade.collide(this.backcarz , this.playerA, null, null , this);
+        game.physics.arcade.collide(this.frontcarz , this.playerA, null, null , this);
+
+        game.physics.arcade.collide(this.leftcarz , this.playerB , null ,null , this);
+        game.physics.arcade.collide(this.rightcarz , this.playerB , null , null, this);
+        game.physics.arcade.collide(this.backcarz , this.playerB , null , null , this);
+        game.physics.arcade.collide(this.frontcarz , this.playerB , null , null , this);
 
 
 		game.physics.arcade.collide(this.leftcarz , disappearBlock , null , null, this);
@@ -492,28 +505,24 @@ function autorization(group,other,left,right,back,front,condition){
 }
 
 function compteisbon(him,who) {
-    console.log('compteisbon');
     who.kill()
     this.leftcarz.remove(who);
     that = caralea(this.leftcarz,getRandomInt(5),1);
     that.body.velocity.x = -150;
 }
 function compteisbon2(him,who) {
-    console.log('compteisbon2');
     who.kill()
     this.rightcarz.remove(who);
     that = caralea(this.rightcarz,getRandomInt(5),2);
     that.body.velocity.x = 150;
 }
 function compteisbon3(him,who) {
-    console.log('compteisbon3');
     who.kill()
     this.backcarz.remove(who);
     that = caralea(this.backcarz,getRandomInt(5),3);
     that.body.velocity.y = 150;
 }
 function compteisbon4(him,who) {
-    console.log('compteisbon4');
     who.kill()
     this.frontcarz.remove(who);
     that = caralea(this.frontcarz,getRandomInt(5),4);
@@ -730,11 +739,12 @@ function mychoice(button){
         game.add.sprite(210+(getRandomInt(7)*20),630+(getRandomInt(3)*20),'canard');
     }
     else if(button == this.button4){
-        grass = game.add.sprite(1000,300,'grass');
-        grass.scale.x = 3 ; grass.scale.y = 7;
+        game.add.sprite(280,320,'tardis');
     }
     else{
-        game.add.sprite(400,400,'caddi1');
+        this.poulpoExist = true;
+        this.poulpo = game.add.sprite(1200,700,'pulpo');
+        this.poulpo.animations.add('nage',[0,1,2,3,4,5,6],10,true);
     }
     this.button1.alpha = 0; this.button2.alpha = 0;
     this.button3.alpha = 0; this.button4.alpha = 0;

@@ -8,14 +8,10 @@ var loadState = {
         game.load.tilemap('Town','assets/map2/myTown.json',null,Phaser.Tilemap.TILED_JSON);
         game.load.image('theset','assets/map2/TILEgame.png');
 
-		game.load.spritesheet('gabe','assets/rpg/chars/gabe.png',24,24);
 		game.load.spritesheet('circulation','assets/feutricolore.png',32,32);
 		game.load.spritesheet('circulation2','assets/fireonde.png',64,64);
+		game.load.spritesheet('pulpo','assets/poulpo1.png',64,64);
 		
-		game.load.image('hat','assets/rpg/chars/hat-guy/hat-guy.png',16,22);
-		game.load.image('bridge','assets/rpg/props/bridge.png',58,56);
-		
-		game.load.image('bee','assets/rpg/mobs/bee.png',34,34);
 		game.load.image('collisionpixel','assets/Obstacles.png',1,1);
 
 		game.load.image('lb','assets/carz/bleugauche.png',64,64);
@@ -39,7 +35,7 @@ var loadState = {
 		game.load.image('fr','assets/carz/rougeface.png',64,64);
 		game.load.image('fgreen','assets/carz/vertface.png',64,64);
 
-        game.load.image('tileset','assets/supermarket.png');
+		game.load.image('tardis','assets/police_box.png');
         game.load.image('barrel','assets/barel.png');
         game.load.image('banana','assets/Banana.png')
         game.load.image('bottle','assets/bottle.png');
@@ -51,7 +47,6 @@ var loadState = {
         game.load.image('fullscreenbutton','assets/fullscreenbutton.png');
         game.load.spritesheet('guy','assets/guy.png',64,64);
         game.load.spritesheet('aveugleetsonchien','assets/aveugleetsonchien.png',64,64);
-        game.load.spritesheet('feutricolore','assets/feutricolore.png',32,32);
 		game.load.audio('themegame','assets/sound/themegame.mp3');
 		game.load.audio('thememenu','assets/sound/thememenu.mp3');
 		
@@ -62,6 +57,9 @@ var loadState = {
 		game.load.image('zonetext', 'assets/zonetext.png',100,100);
 		game.load.image('oui', 'assets/oui.png',64, 64);
 		game.load.image('no', 'assets/no.png',64, 64);
+
+		game.load.spritesheet('startbutton','assets/startclick.png',200,200);
+		game.load.image('wallmenu','assets/wallmenu.png',387,260);
 	},
 
 	create : function(){

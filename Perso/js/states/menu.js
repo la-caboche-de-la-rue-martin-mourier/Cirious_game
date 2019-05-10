@@ -1,26 +1,37 @@
 var menuState = {
 
 	create : function(){
+		var wallmenu = game.add.image(92,0,'wallmenu');
+		wallmenu.scale.setTo(3);
 
-		var nameLabel = game.add.text(80, 80, 'My First Game' , {font : '50px Arial' , fill:'#ffffff'});
+		fs_button = game.add.button(1200,25,"fullscreenbutton",gofull,this);
+		fs_button.scale.setTo(2);
 
-		var startLabel = game.add.text(80, 300 , 'press the button to start' , {font : '25px Arial' , fill:'#ffffff'});
+		var nameLabel = game.add.text(390, 30, 'Dis!Puzzled' , {font : '100px LatoBlack' , fill:'#ffffff'});
 
-		game.add.button(500,300,'playbutton',this.start);
+		var startLabel = game.add.text(900, 515 , 'Press the button to start' , {font : '25px Eldwin' , fontStyle : 'italic', fill:'black'});
 
-		loaded = 0;
-        if(loaded === 0){
-        	game.music = game.add.audio('thememenu');
-            game.music.loop = true ;
-            game.music.play();
-            loaded ++;
-        }
+		var startbutton = game.add.button(905,500,'startbutton',this.start,1,0,1);
+		startbutton.scale.setTo(1.5);
+
 
 	},
 
 	start : function(){
-		game.music.stop();
 		game.state.start('hub');
 	},
-
+	
 };
+
+function gofull() {
+
+    if (game.scale.isFullScreen)
+    {
+        game.scale.stopFullScreen();
+    }
+    else
+    {
+        game.scale.startFullScreen(false);
+    }
+
+}
