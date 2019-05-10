@@ -196,33 +196,134 @@ var hubState = {
         timer = 5;
         game.time.events.loop(Phaser.Timer.SECOND, updateTimer, this);
 
-            //setup objective
+            
+        //setup objective
+
+    
         game.objectives = [];
-            //create 1 objective
+        //create 1 objective
         var objective = [];
         objective[0] = false;
-        objective[1] = "Starting Game";
-        objective[2] = function(playerA){return true;};
+        objective[1] = "Aller faire des demandes pour des accès handicapés";
+        objective[2] = "objective1";
         game.objectives.push(objective);
+        objective1 = game.add.sprite(87,570,'collisionpixel');
+        game.physics.enable(objective1, Phaser.Physics.ARCADE);
+        objective1.body.immovable = true;
+        objective1.body.setSize(53,20,0,0);
+        objective1.body.onCollide = new Phaser.Signal()
+        objective1.body.onCollide.add(checkObjectives1,this);
+
             // next
         var objective = [];
         objective[0] = false;
-        objective[1] = "Searching banana";
-        objective[2] = function(playerA){if(playerA.score === 0){return true;}else{return false;}};
+        objective[1] = "Retirer des sous à la banque";
+        objective[2] = "objective2";
         game.objectives.push(objective);
+        objective2 = game.add.sprite(480,670,'collisionpixel');
+        game.physics.enable(objective2, Phaser.Physics.ARCADE);
+        objective2.body.immovable = true;
+        objective2.body.setSize(32,20,0,0);
+        objective2.body.onCollide = new Phaser.Signal()
+        objective2.body.onCollide.add(checkObjectives2,this);
+        
             ////////
         var objective = [];
         objective[0] = false;
-        objective[1] = "banana";
-        objective[2] = function(playerA){return false;};
+        objective[1] = "Aller chercher saucisse le chien pour l'aveugle !";
+        objective[2] = "objective3";
         game.objectives.push(objective);
+        objective3 = game.add.sprite(96,304,'collisionpixel');
+        game.physics.enable(objective3, Phaser.Physics.ARCADE);
+        objective3.body.immovable = true;
+        objective3.body.setSize(32,22,0,0);
+        objective3.body.onCollide = new Phaser.Signal()
+        objective3.body.onCollide.add(checkObjectives3,this);
             ////////
-        game.objectives.last = game.add.text(256, 16, "",{ fontsize: '32px', fill: '#000'});
-        game.objectives.current = game.add.text(256, 32, game.objectives[0][1],{ fontsize: '32px', fill: '#000'});
+        var objective = [];
+        objective[0] = false;
+        objective[1] = "Aller faire les courses !";
+        objective[2] = "objective4";
+        game.objectives.push(objective);
+        objective4 = game.add.sprite(788,366,'collisionpixel');
+        game.physics.enable(objective4, Phaser.Physics.ARCADE);
+        objective4.body.immovable = true;
+        objective4.body.setSize(24,22,0,0);
+        objective4.body.onCollide = new Phaser.Signal()
+        objective4.body.onCollide.add(checkObjectives4,this);
+            ////////
+        var objective = [];
+        objective[0] = false;
+        objective[1] = "S'acheter un livre pour lire sur la plage";
+        objective[2] = "objective5";
+        game.objectives.push(objective);
+        objective5 = game.add.sprite(350,570,'collisionpixel');
+        game.physics.enable(objective5, Phaser.Physics.ARCADE);
+        objective5.body.immovable = true;
+        objective5.body.setSize(37,20,0,0);
+        objective5.body.onCollide = new Phaser.Signal()
+        objective5.body.onCollide.add(checkObjectives5,this);
+            ///////
+        var objective = [];
+        objective[0] = false;
+        objective[1] = "Passer à la maison déposer les courses";
+        objective[2] = "objective6";
+        game.objectives.push(objective);
+        objective6 = game.add.sprite(158,80,'collisionpixel');
+        game.physics.enable(objective6, Phaser.Physics.ARCADE);
+        objective6.body.immovable = true;
+        objective6.body.setSize(37,20,0,0);
+        objective6.body.onCollide = new Phaser.Signal()
+        objective6.body.onCollide.add(checkObjectives6,this);
+            ///////
+        var objective = [];
+        objective[0] = false;
+        objective[1] = "Aller à la plage";
+        objective[2] = "objective7";
+        game.objectives.push(objective);
+        objective7 = game.add.sprite(800,80,'collisionpixel');
+        game.physics.enable(objective7, Phaser.Physics.ARCADE);
+        objective7.body.immovable = true;
+        objective7.body.setSize(37,20,0,0);
+        objective7.body.onCollide = new Phaser.Signal()
+        objective7.body.onCollide.add(checkObjectives7,this);
+
+            //////
+
+        var objective = [];
+        objective[0] = false;
+        objective[1] = "";
+        objective[2] = "";
+        game.objectives.push(objective);
+
+        game.add.image(780, 12, 'zonetext');
+        var oui = game.add.image(785, 18, 'oui');
+        oui.scale.setTo(0.2,0.2);
+        var no = game.add.image(785, 34,'no');
+        no.scale.setTo(0.2,0.2);
+
+        game.objectives.last = game.add.text(810, 16, "",{ fontSize: '16px', fill: 'white'});
+        game.objectives.current = game.add.text(810, 32, game.objectives[0][1],{ fontSize: '16px', fill: 'white'});
 
 	},
 
 	update : function(){
+
+        game.debug.body(objective1);
+        game.debug.body(objective2);
+        game.debug.body(objective3);
+        game.debug.body(objective4);
+        game.debug.body(objective5);
+        game.debug.body(objective6);
+        game.debug.body(objective7);
+
+        game.physics.arcade.collide(this.playerA, objective1, null, null ,this);
+        game.physics.arcade.collide(this.playerA, objective2, null, null ,this);
+        game.physics.arcade.collide(this.playerA, objective3, null, null ,this);
+        game.physics.arcade.collide(this.playerA, objective4, null, null ,this);
+        game.physics.arcade.collide(this.playerA, objective5, null, null ,this);
+        game.physics.arcade.collide(this.playerA, objective6, null, null ,this);
+        game.physics.arcade.collide(this.playerA, objective7, null, null ,this);
 		
         game.debug.body(this.playerB);
 		autorization(horizFire,vertiFire,this.leftcarz,this.rightcarz,this.backcarz,this.frontcarz);
@@ -447,17 +548,98 @@ function radar(player){
     }
 }
 
-function checkObjectives(objectives,playerA){
+
+function checkObjectives1(){
     var complete = false;
-    var actual = 0 ;
-    if(objectives[0][2](playerA)){
-        objectives[0][0] = true;
+    if(game.objectives[0][2] === "objective1"){
+        game.objectives[0][0] = true;
         complete = true;
     }
     if(complete){
-        objectives.last.text = objectives.current.text;
-        objectives.current.text = objectives[0][1];
-        objectives.shift();
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
+    }
+}
+
+function checkObjectives2(){
+    var complete = false;
+    if(game.objectives[0][2] === "objective2"){
+        game.objectives[0][0] = true;
+        complete = true;
+    }
+    if(complete){
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
+    }
+
+}
+function checkObjectives3(){
+    var complete = false;
+    if(game.objectives[0][2] === "objective3"){
+        game.objectives[0][0] = true;
+        complete = true;
+    }
+    if(complete){
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
+    }
+
+}
+
+function checkObjectives4(){
+    var complete = false;
+    if(game.objectives[0][2] === "objective4"){
+        game.objectives[0][0] = true;
+        complete = true;
+    }
+    if(complete){
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
+    }
+
+}
+function checkObjectives5(){
+    var complete = false;
+    if(game.objectives[0][2] === "objective5"){
+        game.objectives[0][0] = true;
+        complete = true;
+    }
+    if(complete){
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
+    }
+
+}
+
+function checkObjectives6(){
+    var complete = false;
+    if(game.objectives[0][2] === "objective6"){
+        game.objectives[0][0] = true;
+        complete = true;
+    }
+    if(complete){
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
+    }
+
+}
+
+function checkObjectives7(){
+    var complete = false;
+    if(game.objectives[0][2] === "objective7"){
+        game.objectives[0][0] = true;
+        complete = true;
+    }
+    if(complete){
+        game.objectives.last.text = game.objectives.current.text;
+        game.objectives.current.text =game.objectives[1][1];
+        game.objectives.shift();
     }
 
 }

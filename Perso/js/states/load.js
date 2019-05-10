@@ -54,6 +54,10 @@ var loadState = {
 		game.load.image('playbutton' , 'assets/playbu.jpg',170,170);
 		game.load.spritesheet('choice','assets/choice.png',64,64);
 		game.load.spritesheet('mairie','assets/mairie.png',100,100);
+
+		game.load.image('zonetext', 'assets/zonetext.png',100,100);
+		game.load.image('oui', 'assets/oui.png',64, 64);
+		game.load.image('no', 'assets/no.png',64, 64);
 	},
 
 	create : function(){
