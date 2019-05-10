@@ -27,6 +27,15 @@ var hubState = {
         game.physics.enable(bordure2, Phaser.Physics.ARCADE);
         bordure2.body.immovable = true;
         bordure2.body.setSize(1,100,0,0);
+        bordure3 = game.add.sprite(450,384,'collisionpixel');
+        game.physics.enable(bordure3, Phaser.Physics.ARCADE);
+        bordure3.body.immovable = true;
+        bordure3.body.setSize(80,1,0,0);
+        bordure4 = game.add.sprite(450,350,'collisionpixel');
+        game.physics.enable(bordure4, Phaser.Physics.ARCADE);
+        bordure4.body.immovable = true;
+        bordure4.body.setSize(1,34,0,0);
+
 
 
         //Passages Pietons
@@ -77,12 +86,12 @@ var hubState = {
 
         horizFire = game.add.group();
         vertiFire = game.add.group();
-        createFire(horizFire,540,175);
-        createFire(horizFire,795,120);
-        createFire(vertiFire,625,65);
-        createFire(vertiFire,625,355);
-        createFire(vertiFire,710,230);
-        createFire(vertiFire,710,525);
+        createFire(horizFire,510,155);
+        createFire(horizFire,770,90);
+        createFire(vertiFire,590,40);
+        createFire(vertiFire,592,330);
+        createFire(vertiFire,675,205);
+        createFire(vertiFire,678,495);
 
 
         //Players
@@ -111,9 +120,9 @@ var hubState = {
         visu = this.playerB.animations.add('visu',[20,21,22,23,24,25,26,27],10,false);//C'est normal Marc
         this.playerB.animations.add('frontchien',[0,1,2,3],10,true);
         this.playerB.animations.add('behindchien',[4,5,6,7],10,true);
-        this.playerB.animations.add('rightchien'[8,9,10,11,12,13],10,true);
-        this.playerB.animations.add('leftchien'[14,15,16,17,18,19],10,true);
-        this.playerB.animations.add('victory'[29,30,31,32,33,34],10,true);
+        this.playerB.animations.add('rightchien',[8,9,10,11,12,13],10,true);
+        this.playerB.animations.add('leftchien',[14,15,16,17,18,19],10,true);
+        this.playerB.animations.add('victory',[29,30,31,32,33,34],10,true);
         this.playerB.alpha = 0;
 
         visu.onComplete.add(function(){this.playerB.alpha = 0;},this);
@@ -359,6 +368,8 @@ var hubState = {
         game.physics.arcade.collide(this.playerB,obstacles,null,null,this);
         game.physics.arcade.collide(this.playerA,bordure,null,null,this);
         game.physics.arcade.collide(this.playerA,bordure2,null,null,this);
+        game.physics.arcade.collide(this.playerA,bordure3,null,null,this);
+        game.physics.arcade.collide(this.playerA,bordure4,null,null,this);
         game.physics.arcade.collide(this.playerB,bordure,null,null,this);
         game.physics.arcade.collide(this.playerB,bordure2,null,null,this);
         game.physics.arcade.collide(this.playerA,chairobstacles,null,null,this);
@@ -420,21 +431,26 @@ var hubState = {
 
         if (keyQ.isDown)
         {
+            if(this.dog){ this.playerB.alpha = 1 ; this.playerB.animations.play('leftchien'); }
             this.playerB.body.velocity.x = -150; this.playerB.body.velocity.y = 0;
         }
         else if (keyD.isDown)
         {
+            if(this.dog){ this.playerB.alpha = 1 ; this.playerB.animations.play('rightchien'); }
             this.playerB.body.velocity.x = 150; this.playerB.body.velocity.y = 0;
         }
         else if (keyS.isDown)
         {
+            if(this.dog){ this.playerB.alpha = 1 ; this.playerB.animations.play('frontchien'); }
             this.playerB.body.velocity.y = 150; this.playerB.body.velocity.x = 0;
         }
         else if(keyZ.isDown){
+            if(this.dog){ this.playerB.alpha = 1 ; this.playerB.animations.play('behindchien'); }            
             this.playerB.body.velocity.y = -150; this.playerB.body.velocity.x = 0;
         }
         else
         {
+            this.playerB.animations.stop();
             this.playerB.body.velocity.x = 0; this.playerB.body.velocity.y = 0;
         }
 
@@ -637,6 +653,7 @@ function checkObjectives3(){
         game.objectives.last.text = game.objectives.current.text;
         game.objectives.current.text =game.objectives[1][1];
         game.objectives.shift();
+        this.dog = true;
     }
 
 }
@@ -692,6 +709,8 @@ function checkObjectives7(){
         game.objectives.last.text = game.objectives.current.text;
         game.objectives.current.text =game.objectives[1][1];
         game.objectives.shift();
+        this.playerA.animations.play('victory');
+        this.playerB.animations.play('victory');
     }
 
 }
